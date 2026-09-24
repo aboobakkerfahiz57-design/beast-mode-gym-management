@@ -7,6 +7,7 @@
 <title>Beast Mode Fitness Studio</title>
 
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root{
@@ -17,6 +18,7 @@
     --line:#292929;
     --text:#fff;
     --muted:#999;
+    --green:#20c878;
 }
 
 *{
@@ -68,8 +70,6 @@ body{
     background-repeat:no-repeat;
 }
 
-/* TOP */
-
 .topbar{
     height:90px;
     flex-shrink:0;
@@ -110,11 +110,11 @@ body{
     width:7px;
     height:7px;
     border-radius:50%;
+
     background:var(--red);
+
     box-shadow:0 0 12px rgba(227,39,50,.9);
 }
-
-/* HERO */
 
 .hero{
     flex:1;
@@ -147,8 +147,10 @@ body{
 
 .eyebrow::before{
     content:"";
+
     width:34px;
     height:1px;
+
     background:var(--red);
 }
 
@@ -158,11 +160,9 @@ body{
     font-size:clamp(55px,8vw,105px);
 
     line-height:.87;
-
     font-weight:700;
 
     letter-spacing:-6px;
-
     text-transform:uppercase;
 
     margin-bottom:28px;
@@ -178,7 +178,6 @@ body{
     color:rgba(255,255,255,.7);
 
     font-size:14px;
-
     line-height:1.7;
 
     margin-bottom:32px;
@@ -192,7 +191,6 @@ body{
     border:1px solid var(--red);
 
     background:var(--red);
-
     color:#fff;
 
     padding:15px 23px;
@@ -203,23 +201,24 @@ body{
     font-weight:800;
 
     letter-spacing:1.5px;
-
     text-transform:uppercase;
+
+    cursor:pointer;
 
     transition:.25s;
 }
 
 .enter-btn:hover{
     background:var(--red2);
+
     transform:translateY(-3px);
+
     box-shadow:0 15px 35px rgba(227,39,50,.25);
 }
 
 .enter-btn span{
     font-size:18px;
 }
-
-/* BOTTOM */
 
 .bottom{
     position:absolute;
@@ -236,7 +235,6 @@ body{
     font-size:9px;
 
     letter-spacing:1.5px;
-
     text-transform:uppercase;
 }
 
@@ -244,8 +242,9 @@ body{
     color:#fff;
 }
 
+
 /* =========================================
-   LOGIN SCREEN
+   LOGIN
 ========================================= */
 
 #loginScreen{
@@ -278,12 +277,12 @@ body{
     min-height:620px;
 
     display:grid;
+
     grid-template-columns:1.1fr .9fr;
 
     overflow:hidden;
 
     border:1px solid #292929;
-
     border-radius:24px;
 
     background:#0b0b0b;
@@ -291,8 +290,6 @@ body{
     box-shadow:
         0 30px 100px rgba(0,0,0,.65);
 }
-
-/* LOGIN LEFT */
 
 .login-brand{
     position:relative;
@@ -325,7 +322,6 @@ body{
     font-family:"Space Grotesk";
 
     font-size:150px;
-
     font-weight:800;
 
     color:rgba(255,255,255,.025);
@@ -367,7 +363,6 @@ body{
     color:#888;
 
     font-size:13px;
-
     line-height:1.7;
 }
 
@@ -380,11 +375,8 @@ body{
     font-size:9px;
 
     letter-spacing:2px;
-
     text-transform:uppercase;
 }
-
-/* LOGIN PANEL */
 
 .login-panel{
     padding:50px 42px;
@@ -414,10 +406,9 @@ body{
     margin-bottom:28px;
 }
 
-/* ROLE */
-
 .role-tabs{
     display:grid;
+
     grid-template-columns:repeat(3,1fr);
 
     gap:7px;
@@ -429,7 +420,6 @@ body{
     border:1px solid var(--line);
 
     background:#111;
-
     color:#777;
 
     padding:11px 5px;
@@ -457,8 +447,6 @@ body{
     font-weight:800;
 }
 
-/* FIELDS */
-
 .field{
     margin-bottom:15px;
 }
@@ -469,7 +457,6 @@ body{
     color:#aaa;
 
     font-size:10px;
-
     font-weight:700;
 
     letter-spacing:1px;
@@ -483,7 +470,6 @@ body{
     border:1px solid var(--line);
 
     background:#121212;
-
     color:#fff;
 
     padding:14px;
@@ -503,15 +489,12 @@ body{
     box-shadow:0 0 0 2px rgba(227,39,50,.08);
 }
 
-/* LOGIN BUTTON */
-
 .login-btn{
     width:100%;
 
     border:0;
 
     background:var(--red);
-
     color:#fff;
 
     padding:15px;
@@ -535,7 +518,25 @@ body{
     transform:translateY(-1px);
 }
 
-/* DEMO */
+.login-error{
+    display:none;
+
+    margin-top:12px;
+
+    padding:11px;
+
+    border:1px solid rgba(227,39,50,.35);
+
+    border-radius:8px;
+
+    background:rgba(227,39,50,.08);
+
+    color:#ff6d75;
+
+    font-size:11px;
+
+    text-align:center;
+}
 
 .demo{
     margin-top:18px;
@@ -557,13 +558,10 @@ body{
     color:#aaa;
 }
 
-/* BACK */
-
 .back-btn{
     border:0;
 
     background:transparent;
-
     color:#666;
 
     margin-top:18px;
@@ -577,8 +575,9 @@ body{
     color:#fff;
 }
 
+
 /* =========================================
-   DASHBOARD PLACEHOLDER
+   DASHBOARD
 ========================================= */
 
 #dashboardScreen{
@@ -592,12 +591,14 @@ body{
 }
 
 .dashboard{
-    max-width:1100px;
+    max-width:1200px;
+
     margin:auto;
 }
 
 .dashboard-header{
     display:flex;
+
     justify-content:space-between;
     align-items:center;
 
@@ -606,6 +607,7 @@ body{
 
 .dashboard-header h1{
     font-family:"Space Grotesk";
+
     font-size:32px;
 }
 
@@ -617,13 +619,14 @@ body{
     letter-spacing:2px;
 
     text-transform:uppercase;
+
+    margin-bottom:4px;
 }
 
 .logout{
     border:1px solid #333;
 
     background:#111;
-
     color:#aaa;
 
     padding:10px 15px;
@@ -635,17 +638,27 @@ body{
 
 .logout:hover{
     color:#fff;
+
     border-color:#555;
 }
 
+
+/* =========================================
+   STATISTICS
+========================================= */
+
 .dashboard-card{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:repeat(5,1fr);
+
     gap:15px;
+
+    margin-bottom:30px;
 }
 
 .d-card{
-    padding:25px;
+    padding:22px;
 
     border:1px solid #252525;
 
@@ -669,14 +682,394 @@ body{
 
     font-family:"Space Grotesk";
 
-    font-size:35px;
+    font-size:30px;
 
     margin-top:12px;
 }
 
+
+/* =========================================
+   OWNER MEMBER MANAGEMENT
+========================================= */
+
+.management{
+    margin-top:25px;
+}
+
+.section-header{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-bottom:15px;
+}
+
+.section-header h2{
+    font-family:"Space Grotesk";
+
+    font-size:23px;
+}
+
+.add-btn{
+    border:1px solid var(--red);
+
+    background:var(--red);
+
+    color:#fff;
+
+    padding:11px 16px;
+
+    border-radius:8px;
+
+    font-size:11px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.add-btn:hover{
+    background:var(--red2);
+}
+
+
+/* =========================================
+   ADD MEMBER PANEL
+========================================= */
+
+.add-member-panel{
+    display:none;
+
+    margin-bottom:20px;
+
+    padding:22px;
+
+    border:1px solid #292929;
+
+    border-radius:15px;
+
+    background:#101010;
+}
+
+.add-member-panel h3{
+    font-family:"Space Grotesk";
+
+    margin-bottom:18px;
+}
+
+.member-form{
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:14px;
+}
+
+.member-form .full{
+    grid-column:1/-1;
+}
+
+.member-form input,
+.member-form select{
+    width:100%;
+
+    padding:13px;
+
+    border:1px solid #292929;
+
+    border-radius:8px;
+
+    background:#151515;
+
+    color:#fff;
+
+    outline:none;
+}
+
+.member-form input:focus,
+.member-form select:focus{
+    border-color:var(--red);
+}
+
+.form-label{
+    display:block;
+
+    color:#777;
+
+    font-size:9px;
+
+    letter-spacing:1px;
+
+    margin-bottom:6px;
+
+    text-transform:uppercase;
+}
+
+.form-actions{
+    grid-column:1/-1;
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:5px;
+}
+
+.save-btn{
+    border:0;
+
+    background:var(--red);
+
+    color:#fff;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+.cancel-btn{
+    border:1px solid #333;
+
+    background:#111;
+
+    color:#aaa;
+
+    padding:12px 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.search-box{
+    width:100%;
+
+    margin-bottom:15px;
+
+    padding:14px 16px;
+
+    border:1px solid #292929;
+
+    border-radius:10px;
+
+    background:#101010;
+
+    color:#fff;
+
+    outline:none;
+
+    font-size:13px;
+}
+
+.search-box:focus{
+    border-color:var(--red);
+}
+
+
+/* =========================================
+   MEMBER TABLE
+========================================= */
+
+.table-wrap{
+    overflow-x:auto;
+
+    border:1px solid #252525;
+
+    border-radius:15px;
+
+    background:#101010;
+}
+
+.member-table{
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:750px;
+}
+
+.member-table th{
+    padding:15px;
+
+    text-align:left;
+
+    color:#666;
+
+    font-size:9px;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    border-bottom:1px solid #252525;
+}
+
+.member-table td{
+    padding:15px;
+
+    color:#ccc;
+
+    font-size:12px;
+
+    border-bottom:1px solid #1d1d1d;
+}
+
+.member-table tr:last-child td{
+    border-bottom:0;
+}
+
+.member-table tr:hover td{
+    background:#141414;
+}
+
+.member-id{
+    color:var(--red);
+
+    font-weight:800;
+}
+
+.status-active{
+    display:inline-block;
+
+    padding:5px 8px;
+
+    border-radius:20px;
+
+    background:rgba(32,200,120,.1);
+
+    color:var(--green);
+
+    font-size:9px;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+}
+
+.delete-btn{
+    border:1px solid #402020;
+
+    background:#1a0c0c;
+
+    color:#ff656d;
+
+    padding:7px 10px;
+
+    border-radius:6px;
+
+    font-size:10px;
+
+    cursor:pointer;
+}
+
+.delete-btn:hover{
+    background:#2a1010;
+}
+
+.empty-state{
+    padding:35px;
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:12px;
+}
+
+
+/* =========================================
+   TRAINER / MEMBER INFO
+========================================= */
+
+.simple-panel{
+    margin-top:25px;
+
+    padding:25px;
+
+    border:1px solid #252525;
+
+    border-radius:15px;
+
+    background:#101010;
+}
+
+.simple-panel h2{
+    font-family:"Space Grotesk";
+
+    margin-bottom:10px;
+}
+
+.simple-panel p{
+    color:#777;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.profile-grid{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+.profile-item{
+    padding:18px;
+
+    border:1px solid #252525;
+
+    border-radius:10px;
+
+    background:#0c0c0c;
+}
+
+.profile-item small{
+    display:block;
+
+    color:#666;
+
+    font-size:9px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    margin-bottom:7px;
+}
+
+.profile-item strong{
+    font-size:14px;
+}
+
+
 /* =========================================
    MOBILE
 ========================================= */
+
+@media(max-width:1000px){
+
+    .dashboard-card{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
 
 @media(max-width:800px){
 
@@ -690,18 +1083,41 @@ body{
 
     .login-panel{
         border-left:0;
+
         border-top:1px solid var(--line);
     }
 
     .dashboard-card{
         grid-template-columns:1fr;
     }
+
+    .member-form{
+        grid-template-columns:1fr;
+    }
+
+    .member-form .full{
+        grid-column:auto;
+    }
+
+    .form-actions{
+        grid-column:auto;
+    }
+
+    .profile-grid{
+        grid-template-columns:1fr;
+    }
+
 }
 
 @media(max-width:600px){
 
+    #dashboardScreen{
+        padding:20px;
+    }
+
     .topbar{
         height:75px;
+
         padding:0 22px;
     }
 
@@ -719,6 +1135,7 @@ body{
 
     .hero h1{
         font-size:53px;
+
         letter-spacing:-4px;
     }
 
@@ -733,6 +1150,7 @@ body{
 
     .login-brand{
         padding:30px;
+
         min-height:260px;
     }
 
@@ -743,7 +1161,27 @@ body{
     .login-main h1{
         font-size:48px;
     }
+
+    .dashboard-header{
+        align-items:flex-start;
+    }
+
+    .dashboard-header h1{
+        font-size:25px;
+    }
+
+    .section-header{
+        align-items:flex-start;
+
+        flex-direction:column;
+    }
+
+    .add-btn{
+        width:100%;
+    }
+
 }
+
 </style>
 </head>
 
@@ -765,8 +1203,11 @@ body{
         >
 
         <div class="status">
+
             <span class="status-dot"></span>
+
             Digital Management System
+
         </div>
 
     </header>
@@ -792,14 +1233,17 @@ body{
                 members, trainers and gym operations.
             </p>
 
-      <button
-               type="button"
-               class="enter-btn"
-               onclick="showLogin()"
->
-    Enter Management System
-    <span>→</span>
-</button>
+            <button
+                type="button"
+                class="enter-btn"
+                onclick="showLogin()"
+            >
+
+                Enter Management System
+
+                <span>→</span>
+
+            </button>
 
         </div>
 
@@ -809,18 +1253,25 @@ body{
     <div class="bottom">
 
         <div>
+
             <strong>BEAST MODE FITNESS STUDIO</strong>
+
             &nbsp; · &nbsp;
+
             MANGALURU
+
         </div>
 
         <div>
-            GYM MANAGEMENT · V1
+
+            GYM MANAGEMENT · V2
+
         </div>
 
     </div>
 
 </section>
+
 
 
 <!-- =========================================
@@ -830,6 +1281,7 @@ body{
 <section id="loginScreen">
 
     <div class="login-wrap">
+
 
         <div class="login-brand">
 
@@ -858,7 +1310,9 @@ body{
             </div>
 
             <div class="login-footer">
+
                 Beast Mode Fitness Studio · Mangaluru
+
             </div>
 
         </div>
@@ -866,7 +1320,9 @@ body{
 
         <div class="login-panel">
 
-            <h2>Welcome back.</h2>
+            <h2>
+                Welcome back.
+            </h2>
 
             <p>
                 Select your account and sign in.
@@ -901,7 +1357,9 @@ body{
 
             <div class="field">
 
-                <label>LOGIN ID</label>
+                <label>
+                    LOGIN ID
+                </label>
 
                 <input
                     id="loginId"
@@ -915,7 +1373,9 @@ body{
 
             <div class="field">
 
-                <label>PASSWORD</label>
+                <label>
+                    PASSWORD
+                </label>
 
                 <input
                     id="loginPassword"
@@ -936,17 +1396,33 @@ body{
             </button>
 
 
+            <div
+                class="login-error"
+                id="loginError"
+            >
+                Invalid login details.
+            </div>
+
+
             <div class="demo">
 
-                <strong>V1 DEMO ACCESS</strong><br>
+                <strong>
+                    V2 DEMO ACCESS
+                </strong>
+
+                <br>
 
                 Owner:
                 <b>owner</b> /
-                <b>admin123</b><br>
+                <b>admin123</b>
+
+                <br>
 
                 Trainer:
                 <b>trainer</b> /
-                <b>trainer123</b><br>
+                <b>trainer123</b>
+
+                <br>
 
                 Member:
                 <b>BM1001</b> /
@@ -969,25 +1445,35 @@ body{
 </section>
 
 
+
 <!-- =========================================
-     TEMPORARY DASHBOARD
+     DASHBOARD
 ========================================= -->
 
 <section id="dashboardScreen">
 
     <div class="dashboard">
 
+
+        <!-- HEADER -->
+
         <div class="dashboard-header">
 
             <div>
-                <div class="role-label" id="dashboardRole">
+
+                <div
+                    class="role-label"
+                    id="dashboardRole"
+                >
                     OWNER
                 </div>
 
                 <h1 id="dashboardTitle">
-                    Dashboard
+                    Owner Dashboard
                 </h1>
+
             </div>
+
 
             <button
                 class="logout"
@@ -999,38 +1485,556 @@ body{
         </div>
 
 
+
+        <!-- STATISTICS -->
+
         <div class="dashboard-card">
 
             <div class="d-card">
-    <small>Total Members</small>
-    <strong>126</strong>
-</div>
 
-<div class="d-card">
-    <small>Today's Attendance</small>
-    <strong>43</strong>
-</div>
+                <small>
+                    Total Members
+                </small>
 
-<div class="d-card">
-    <small>Fees Due</small>
-    <strong>14</strong>
-</div>
+                <strong id="totalMembers">
+                    0
+                </strong>
 
-<div class="d-card">
-    <small>Active Trainers</small>
-    <strong>8</strong>
-</div>
+            </div>
 
-<div class="d-card">
-    <small>Monthly Revenue</small>
-    <strong>₹85,000</strong>
-</div>
+
+            <div class="d-card">
+
+                <small>
+                    Today's Attendance
+                </small>
+
+                <strong>
+                    43
+                </strong>
+
+            </div>
+
+
+            <div class="d-card">
+
+                <small>
+                    Fees Due
+                </small>
+
+                <strong>
+                    14
+                </strong>
+
+            </div>
+
+
+            <div class="d-card">
+
+                <small>
+                    Active Trainers
+                </small>
+
+                <strong>
+                    8
+                </strong>
+
+            </div>
+
+
+            <div class="d-card">
+
+                <small>
+                    Monthly Revenue
+                </small>
+
+                <strong>
+                    ₹85,000
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================
+             OWNER MEMBER MANAGEMENT
+        ====================================== -->
+
+        <div
+            class="management"
+            id="ownerManagement"
+        >
+
+            <div class="section-header">
+
+                <h2>
+                    Member Management
+                </h2>
+
+                <button
+                    class="add-btn"
+                    onclick="toggleAddMember()"
+                >
+                    + ADD MEMBER
+                </button>
+
+            </div>
+
+
+            <!-- ADD MEMBER -->
+
+            <div
+                class="add-member-panel"
+                id="addMemberPanel"
+            >
+
+                <h3>
+                    Add New Member
+                </h3>
+
+
+                <div class="member-form">
+
+
+                    <div>
+
+                        <label class="form-label">
+                            Member Name
+                        </label>
+
+                        <input
+                            id="memberName"
+                            type="text"
+                            placeholder="Enter full name"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="form-label">
+                            Phone Number
+                        </label>
+
+                        <input
+                            id="memberPhone"
+                            type="tel"
+                            placeholder="Enter phone number"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="form-label">
+                            Email
+                        </label>
+
+                        <input
+                            id="memberEmail"
+                            type="email"
+                            placeholder="Enter email"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="form-label">
+                            Plan
+                        </label>
+
+                        <select id="memberPlan">
+
+                            <option value="Monthly">
+                                Monthly
+                            </option>
+
+                            <option value="Quarterly">
+                                Quarterly
+                            </option>
+
+                            <option value="Half Yearly">
+                                Half Yearly
+                            </option>
+
+                            <option value="Yearly">
+                                Yearly
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="form-label">
+                            Joining Date
+                        </label>
+
+                        <input
+                            id="memberDate"
+                            type="date"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="form-label">
+                            Membership Status
+                        </label>
+
+                        <select id="memberStatus">
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            class="save-btn"
+                            onclick="addMember()"
+                        >
+                            SAVE MEMBER
+                        </button>
+
+                        <button
+                            class="cancel-btn"
+                            onclick="toggleAddMember(false)"
+                        >
+                            CANCEL
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                class="search-box"
+                id="memberSearch"
+                placeholder="Search members by name, ID, phone or email..."
+                oninput="renderMembers()"
+            >
+
+
+            <!-- TABLE -->
+
+            <div class="table-wrap">
+
+                <table class="member-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Name
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Plan
+                            </th>
+
+                            <th>
+                                Joining Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="memberTableBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================
+             TRAINER PANEL
+        ====================================== -->
+
+        <div
+            class="simple-panel"
+            id="trainerPanel"
+            style="display:none;"
+        >
+
+            <h2>
+                Trainer Workspace
+            </h2>
+
+            <p>
+                Welcome to the Beast Mode trainer dashboard.
+                Member training and attendance features will
+                be connected here in the next development stage.
+            </p>
+
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+
+                    <small>
+                        Assigned Members
+                    </small>
+
+                    <strong>
+                        24
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <small>
+                        Today's Sessions
+                    </small>
+
+                    <strong>
+                        6
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <small>
+                        Attendance
+                    </small>
+
+                    <strong>
+                        92%
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================
+             MEMBER PANEL
+        ====================================== -->
+
+        <div
+            class="simple-panel"
+            id="memberPanel"
+            style="display:none;"
+        >
+
+            <h2>
+                Member Profile
+            </h2>
+
+            <p>
+                Welcome to your Beast Mode Fitness Studio
+                member dashboard.
+            </p>
+
+
+            <div class="profile-grid">
+
+                <div class="profile-item">
+
+                    <small>
+                        Member ID
+                    </small>
+
+                    <strong id="memberProfileId">
+                        BM1001
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <small>
+                        Membership
+                    </small>
+
+                    <strong>
+                        Active
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <small>
+                        Attendance
+                    </small>
+
+                    <strong>
+                        92%
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
 </section>
+
 
 
 <script>
 
+/* =========================================
+   GLOBAL VARIABLES
+========================================= */
+
 let currentRole = "owner";
+
+
+/* =========================================
+   DEFAULT MEMBERS
+========================================= */
+
+const defaultMembers = [
+
+    {
+        id:"BM1001",
+        name:"Aboobakker Fahiz",
+        phone:"9876543210",
+        email:"member@beastmode.com",
+        plan:"Yearly",
+        date:"2026-01-01",
+        status:"Active"
+    },
+
+    {
+        id:"BM1002",
+        name:"Rahul Kumar",
+        phone:"9876543211",
+        email:"rahul@example.com",
+        plan:"Monthly",
+        date:"2026-02-10",
+        status:"Active"
+    },
+
+    {
+        id:"BM1003",
+        name:"Mohammed Shafi",
+        phone:"9876543212",
+        email:"shafi@example.com",
+        plan:"Quarterly",
+        date:"2026-03-15",
+        status:"Active"
+    },
+
+    {
+        id:"BM1004",
+        name:"Arjun Shetty",
+        phone:"9876543213",
+        email:"arjun@example.com",
+        plan:"Monthly",
+        date:"2026-04-20",
+        status:"Active"
+    }
+
+];
+
+
+/* =========================================
+   LOAD MEMBERS
+========================================= */
+
+function getMembers(){
+
+    const saved =
+        localStorage.getItem("beastModeMembers");
+
+    if(saved){
+
+        try{
+
+            return JSON.parse(saved);
+
+        }catch(error){
+
+            console.log("Member data error");
+
+        }
+
+    }
+
+    localStorage.setItem(
+        "beastModeMembers",
+        JSON.stringify(defaultMembers)
+    );
+
+    return defaultMembers;
+
+}
+
+
+/* =========================================
+   SAVE MEMBERS
+========================================= */
+
+function saveMembers(members){
+
+    localStorage.setItem(
+        "beastModeMembers",
+        JSON.stringify(members)
+    );
+
+}
 
 
 /* =========================================
@@ -1039,11 +2043,47 @@ let currentRole = "owner";
 
 function showLogin(){
 
-    document.getElementById("homeScreen").style.display="none";
+    const home =
+        document.getElementById("homeScreen");
 
-    document.getElementById("loginScreen").style.display="flex";
+    const login =
+        document.getElementById("loginScreen");
 
-    document.getElementById("dashboardScreen").style.display="none";
+    const dashboard =
+        document.getElementById("dashboardScreen");
+
+
+    if(home){
+
+        home.style.display="none";
+
+    }
+
+
+    if(dashboard){
+
+        dashboard.style.display="none";
+
+    }
+
+
+    if(login){
+
+        login.style.display="flex";
+
+        login.style.visibility="visible";
+
+        login.style.opacity="1";
+
+        login.style.pointerEvents="auto";
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 }
 
@@ -1052,31 +2092,15 @@ function showLogin(){
    SHOW HOME
 ========================================= */
 
-function showLogin() {
+function showHome(){
 
-  const home = document.getElementById("homeScreen");
-  const login = document.getElementById("loginScreen");
-  const dashboard = document.getElementById("dashboardScreen");
+    document.getElementById("homeScreen").style.display="flex";
 
-  if (home) {
-    home.style.display = "none";
-  }
+    document.getElementById("loginScreen").style.display="none";
 
-  if (dashboard) {
-    dashboard.style.display = "none";
-  }
+    document.getElementById("dashboardScreen").style.display="none";
 
-  if (login) {
-    login.style.display = "flex";
-    login.style.visibility = "visible";
-    login.style.opacity = "1";
-    login.style.pointerEvents = "auto";
-  }
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+    document.getElementById("loginError").style.display="none";
 
 }
 
@@ -1089,16 +2113,24 @@ function selectRole(role,button){
 
     currentRole=role;
 
+
     document
         .querySelectorAll(".role-tab")
         .forEach(tab=>{
+
             tab.classList.remove("active");
+
         });
+
 
     button.classList.add("active");
 
+
     document.getElementById("loginId").value="";
+
     document.getElementById("loginPassword").value="";
+
+    document.getElementById("loginError").style.display="none";
 
     document.getElementById("loginId").focus();
 
@@ -1117,6 +2149,7 @@ function login(){
         .value
         .trim();
 
+
     const password =
         document
         .getElementById("loginPassword")
@@ -1127,40 +2160,67 @@ function login(){
     let valid=false;
 
 
+    /* OWNER */
+
     if(
         currentRole==="owner" &&
         id==="owner" &&
         password==="admin123"
     ){
+
         valid=true;
+
     }
 
+
+    /* TRAINER */
 
     if(
         currentRole==="trainer" &&
         id==="trainer" &&
         password==="trainer123"
     ){
+
         valid=true;
+
     }
 
+
+    /* MEMBER */
 
     if(
         currentRole==="member" &&
         id==="BM1001" &&
         password==="18022007"
     ){
+
         valid=true;
+
     }
 
 
     if(!valid){
 
-        alert("Invalid login details.");
+        document.getElementById("loginError").style.display="block";
 
         return;
+
     }
 
+
+    document.getElementById("loginError").style.display="none";
+
+
+    showDashboard();
+
+}
+
+
+/* =========================================
+   SHOW DASHBOARD
+========================================= */
+
+function showDashboard(){
 
     document.getElementById("homeScreen").style.display="none";
 
@@ -1169,33 +2229,495 @@ function login(){
     document.getElementById("dashboardScreen").style.display="block";
 
 
-    const roleText =
-        currentRole.toUpperCase();
+    const title =
+        document.getElementById("dashboardTitle");
 
-    document.getElementById("dashboardRole")
-        .textContent=roleText;
+    const role =
+        document.getElementById("dashboardRole");
+
+
+    const ownerManagement =
+        document.getElementById("ownerManagement");
+
+    const trainerPanel =
+        document.getElementById("trainerPanel");
+
+    const memberPanel =
+        document.getElementById("memberPanel");
+
+
+    ownerManagement.style.display="none";
+
+    trainerPanel.style.display="none";
+
+    memberPanel.style.display="none";
 
 
     if(currentRole==="owner"){
 
-        document.getElementById("dashboardTitle")
-            .textContent="Owner Dashboard";
+        role.textContent="OWNER";
+
+        title.textContent="Owner Dashboard";
+
+        ownerManagement.style.display="block";
+
+        renderMembers();
 
     }
+
 
     if(currentRole==="trainer"){
 
-        document.getElementById("dashboardTitle")
-            .textContent="Trainer Dashboard";
+        role.textContent="TRAINER";
+
+        title.textContent="Trainer Dashboard";
+
+        trainerPanel.style.display="block";
 
     }
+
 
     if(currentRole==="member"){
 
-        document.getElementById("dashboardTitle")
-            .textContent="Member Dashboard";
+        role.textContent="MEMBER";
+
+        title.textContent="Member Dashboard";
+
+        memberPanel.style.display="block";
 
     }
+
+
+    updateMemberCount();
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================
+   UPDATE TOTAL MEMBER COUNT
+========================================= */
+
+function updateMemberCount(){
+
+    const members=getMembers();
+
+    document.getElementById("totalMembers").textContent=
+        members.length;
+
+}
+
+
+/* =========================================
+   TOGGLE ADD MEMBER
+========================================= */
+
+function toggleAddMember(show){
+
+    const panel =
+        document.getElementById("addMemberPanel");
+
+
+    if(show===false){
+
+        panel.style.display="none";
+
+        clearMemberForm();
+
+        return;
+
+    }
+
+
+    if(panel.style.display==="block"){
+
+        panel.style.display="none";
+
+    }else{
+
+        panel.style.display="block";
+
+        document
+            .getElementById("memberName")
+            .focus();
+
+    }
+
+}
+
+
+/* =========================================
+   CLEAR MEMBER FORM
+========================================= */
+
+function clearMemberForm(){
+
+    document.getElementById("memberName").value="";
+
+    document.getElementById("memberPhone").value="";
+
+    document.getElementById("memberEmail").value="";
+
+    document.getElementById("memberPlan").value="Monthly";
+
+    document.getElementById("memberDate").value="";
+
+    document.getElementById("memberStatus").value="Active";
+
+}
+
+
+/* =========================================
+   ADD MEMBER
+========================================= */
+
+function addMember(){
+
+    const name =
+        document
+        .getElementById("memberName")
+        .value
+        .trim();
+
+
+    const phone =
+        document
+        .getElementById("memberPhone")
+        .value
+        .trim();
+
+
+    const email =
+        document
+        .getElementById("memberEmail")
+        .value
+        .trim();
+
+
+    const plan =
+        document
+        .getElementById("memberPlan")
+        .value;
+
+
+    const date =
+        document
+        .getElementById("memberDate")
+        .value;
+
+
+    const status =
+        document
+        .getElementById("memberStatus")
+        .value;
+
+
+    if(!name){
+
+        alert("Please enter member name.");
+
+        return;
+
+    }
+
+
+    if(!phone){
+
+        alert("Please enter phone number.");
+
+        return;
+
+    }
+
+
+    let members=getMembers();
+
+
+    const newNumber =
+        members.length + 1001;
+
+
+    const newId =
+        "BM" + newNumber;
+
+
+    const newMember={
+
+        id:newId,
+
+        name:name,
+
+        phone:phone,
+
+        email:email,
+
+        plan:plan,
+
+        date:date || new Date().toISOString().split("T")[0],
+
+        status:status
+
+    };
+
+
+    members.push(newMember);
+
+
+    saveMembers(members);
+
+
+    clearMemberForm();
+
+    document.getElementById("addMemberPanel").style.display="none";
+
+
+    renderMembers();
+
+    updateMemberCount();
+
+
+    alert(
+        "Member added successfully!\nMember ID: " + newId
+    );
+
+}
+
+
+/* =========================================
+   RENDER MEMBERS
+========================================= */
+
+function renderMembers(){
+
+    const members=getMembers();
+
+
+    const search =
+        document
+        .getElementById("memberSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const filtered =
+        members.filter(member=>{
+
+            return (
+
+                member.id.toLowerCase().includes(search) ||
+
+                member.name.toLowerCase().includes(search) ||
+
+                member.phone.toLowerCase().includes(search) ||
+
+                member.email.toLowerCase().includes(search)
+
+            );
+
+        });
+
+
+    const tbody =
+        document.getElementById("memberTableBody");
+
+
+    if(filtered.length===0){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="empty-state"
+                >
+                    No members found.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        filtered.map(member=>`
+
+            <tr>
+
+                <td>
+
+                    <span class="member-id">
+                        ${escapeHTML(member.id)}
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(member.name)}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(member.phone)}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(member.plan)}
+
+                </td>
+
+
+                <td>
+
+                    ${formatDate(member.date)}
+
+                </td>
+
+
+                <td>
+
+                    <span class="status-active">
+
+                        ${escapeHTML(member.status)}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteMember('${member.id}')"
+                    >
+                        DELETE
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================================
+   DELETE MEMBER
+========================================= */
+
+function deleteMember(id){
+
+    const members=getMembers();
+
+
+    const member =
+        members.find(
+            item=>item.id===id
+        );
+
+
+    if(!member){
+
+        return;
+
+    }
+
+
+    const confirmDelete =
+        confirm(
+            "Delete member " +
+            member.name +
+            " (" +
+            member.id +
+            ")?"
+        );
+
+
+    if(!confirmDelete){
+
+        return;
+
+    }
+
+
+    const updated =
+        members.filter(
+            item=>item.id!==id
+        );
+
+
+    saveMembers(updated);
+
+
+    renderMembers();
+
+    updateMemberCount();
+
+}
+
+
+/* =========================================
+   FORMAT DATE
+========================================= */
+
+function formatDate(date){
+
+    if(!date){
+
+        return "-";
+
+    }
+
+
+    const parts =
+        date.split("-");
+
+
+    if(parts.length!==3){
+
+        return date;
+
+    }
+
+
+    return parts[2] + "/" +
+           parts[1] + "/" +
+           parts[0];
+
+}
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
@@ -1214,7 +2736,45 @@ function logout(){
 
     document.getElementById("loginPassword").value="";
 
+    document.getElementById("loginError").style.display="none";
+
+    currentRole="owner";
+
+
+    document
+        .querySelectorAll(".role-tab")
+        .forEach(tab=>{
+
+            tab.classList.remove("active");
+
+        });
+
+
+    document
+        .querySelector(".role-tab")
+        .classList.add("active");
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
 }
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        updateMemberCount();
+
+    }
+);
 
 </script>
 
