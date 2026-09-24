@@ -1,36 +1,452 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Beast Mode Fitness Studio</title>
+<title>Beast Mode Fitness Studio</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #000;
-        }
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
 
-        body {
-            background-image: url("beast-mode-home-bg.png");
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-        }
-    </style>
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050505;
+    color:#fff;
+}
+
+/* =========================================
+   HOMEPAGE
+========================================= */
+
+.home{
+    position:relative;
+    width:100%;
+    height:100vh;
+    min-height:600px;
+    overflow:hidden;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.88) 0%,
+            rgba(0,0,0,.58) 42%,
+            rgba(0,0,0,.25) 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(0,0,0,.65) 0%,
+            transparent 55%,
+            rgba(0,0,0,.15) 100%
+        ),
+        url("beast-mode-home-bg.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+/* subtle cinematic overlay */
+
+.home::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(
+            circle at 75% 45%,
+            rgba(220,25,35,.12),
+            transparent 35%
+        );
+
+    pointer-events:none;
+}
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.topbar{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+
+    height:90px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 5%;
+
+    z-index:10;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,.55),
+        transparent
+    );
+}
+
+/* LOGO */
+
+.logo{
+    width:125px;
+    height:auto;
+    display:block;
+    object-fit:contain;
+}
+
+/* status */
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    color:rgba(255,255,255,.7);
+
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#e32732;
+
+    box-shadow:
+        0 0 12px rgba(227,39,50,.8);
+}
+
+/* =========================================
+   HERO CONTENT
+========================================= */
+
+.hero{
+    position:relative;
+    z-index:5;
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+
+    padding:90px 5% 40px;
+}
+
+.hero-content{
+    max-width:650px;
+}
+
+.eyebrow{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    margin-bottom:22px;
+
+    color:#e32732;
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:4px;
+    text-transform:uppercase;
+}
+
+.eyebrow::before{
+    content:"";
+
+    width:34px;
+    height:1px;
+
+    background:#e32732;
+}
+
+.hero h1{
+    font-size:clamp(54px,8vw,105px);
+
+    line-height:.88;
+
+    font-weight:900;
+
+    letter-spacing:-6px;
+
+    text-transform:uppercase;
+
+    margin-bottom:28px;
+
+    text-shadow:
+        0 8px 35px rgba(0,0,0,.7);
+}
+
+.hero h1 span{
+    color:#e32732;
+}
+
+.hero-description{
+    max-width:500px;
+
+    color:rgba(255,255,255,.68);
+
+    font-size:15px;
+
+    line-height:1.7;
+
+    margin-bottom:34px;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.enter-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+
+    padding:15px 24px;
+
+    border:1px solid rgba(255,255,255,.25);
+
+    background:#e32732;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:12px;
+    font-weight:800;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        box-shadow .25s ease;
+}
+
+.enter-btn span{
+    font-size:18px;
+    line-height:0;
+}
+
+.enter-btn:hover{
+    transform:translateY(-3px);
+
+    background:#ff303c;
+
+    box-shadow:
+        0 15px 40px rgba(227,39,50,.25);
+}
+
+/* =========================================
+   BOTTOM INFORMATION
+========================================= */
+
+.bottom{
+    position:absolute;
+
+    left:5%;
+    right:5%;
+    bottom:28px;
+
+    z-index:10;
+
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+}
+
+.location{
+    color:rgba(255,255,255,.45);
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+}
+
+.location strong{
+    color:#fff;
+    font-weight:600;
+}
+
+.system{
+    color:rgba(255,255,255,.35);
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:700px){
+
+    .topbar{
+        height:75px;
+        padding:0 22px;
+    }
+
+    .logo{
+        width:100px;
+    }
+
+    .status{
+        font-size:8px;
+        letter-spacing:1.5px;
+    }
+
+    .hero{
+        padding:
+            80px
+            22px
+            70px;
+    }
+
+    .hero-content{
+        max-width:100%;
+    }
+
+    .eyebrow{
+        font-size:9px;
+        letter-spacing:3px;
+        margin-bottom:18px;
+    }
+
+    .hero h1{
+        font-size:clamp(48px,15vw,75px);
+        letter-spacing:-4px;
+        margin-bottom:22px;
+    }
+
+    .hero-description{
+        font-size:13px;
+        max-width:360px;
+        margin-bottom:28px;
+    }
+
+    .enter-btn{
+        padding:14px 20px;
+        font-size:10px;
+    }
+
+    .bottom{
+        left:22px;
+        right:22px;
+        bottom:20px;
+    }
+
+    .location{
+        font-size:8px;
+        letter-spacing:1px;
+    }
+
+    .system{
+        display:none;
+    }
+}
+</style>
 </head>
 
 <body>
+
+<section class="home">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+        <img
+            src="beast-mode-logo.png"
+            alt="Beast Mode Fitness Studio"
+            class="logo"
+        >
+
+        <div class="status">
+            <span class="status-dot"></span>
+            Digital Management System
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+    <main class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                Beast Mode Fitness Studio
+            </div>
+
+            <h1>
+                TRAIN<br>
+                <span>HARD.</span><br>
+                LIVE<br>
+                STRONG.
+            </h1>
+
+            <p class="hero-description">
+                The digital management platform for
+                members, trainers and gym operations.
+            </p>
+
+            <a href="#login" class="enter-btn">
+                Enter Management System
+                <span>→</span>
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- BOTTOM -->
+    <div class="bottom">
+
+        <div class="location">
+            <strong>BEAST MODE FITNESS STUDIO</strong>
+            &nbsp; · &nbsp;
+            MANGALURU
+        </div>
+
+        <div class="system">
+            Gym Management · V1
+        </div>
+
+    </div>
+
+</section>
 
 </body>
 </html>
