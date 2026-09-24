@@ -7,23 +7,33 @@
 <title>Beast Mode Fitness Studio</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root{
+    --red:#e32732;
+    --red2:#ff3541;
+    --black:#050505;
+    --panel:#101010;
+    --line:#292929;
+    --text:#fff;
+    --muted:#999;
+}
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-html,
-body{
+html,body{
     width:100%;
-    height:100%;
-    overflow:hidden;
+    min-height:100%;
 }
 
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#050505;
-    color:#fff;
+    font-family:Inter,Arial,sans-serif;
+    background:var(--black);
+    color:var(--text);
 }
 
 /* =========================================
@@ -32,23 +42,24 @@ body{
 
 .home{
     position:relative;
-    width:100%;
+    min-height:100vh;
     height:100vh;
-    min-height:600px;
     overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
 
     background-image:
         linear-gradient(
             90deg,
-            rgba(0,0,0,.88) 0%,
-            rgba(0,0,0,.58) 42%,
-            rgba(0,0,0,.25) 100%
+            rgba(0,0,0,.88),
+            rgba(0,0,0,.52) 45%,
+            rgba(0,0,0,.18)
         ),
         linear-gradient(
             0deg,
-            rgba(0,0,0,.65) 0%,
-            transparent 55%,
-            rgba(0,0,0,.15) 100%
+            rgba(0,0,0,.72),
+            transparent 60%
         ),
         url("beast-mode-home-bg.png");
 
@@ -57,42 +68,17 @@ body{
     background-repeat:no-repeat;
 }
 
-/* subtle cinematic overlay */
-
-.home::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background:
-        radial-gradient(
-            circle at 75% 45%,
-            rgba(220,25,35,.12),
-            transparent 35%
-        );
-
-    pointer-events:none;
-}
-
-/* =========================================
-   TOP BAR
-========================================= */
+/* TOP */
 
 .topbar{
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-
     height:90px;
+    flex-shrink:0;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
 
     padding:0 5%;
-
-    z-index:10;
 
     border-bottom:1px solid rgba(255,255,255,.08);
 
@@ -103,25 +89,19 @@ body{
     );
 }
 
-/* LOGO */
-
 .logo{
     width:125px;
     height:auto;
-    display:block;
-    object-fit:contain;
 }
-
-/* status */
 
 .status{
     display:flex;
     align-items:center;
     gap:9px;
 
-    color:rgba(255,255,255,.7);
+    color:#bbb;
 
-    font-size:11px;
+    font-size:10px;
     letter-spacing:2px;
     text-transform:uppercase;
 }
@@ -129,30 +109,20 @@ body{
 .status-dot{
     width:7px;
     height:7px;
-
     border-radius:50%;
-
-    background:#e32732;
-
-    box-shadow:
-        0 0 12px rgba(227,39,50,.8);
+    background:var(--red);
+    box-shadow:0 0 12px rgba(227,39,50,.9);
 }
 
-/* =========================================
-   HERO CONTENT
-========================================= */
+/* HERO */
 
 .hero{
-    position:relative;
-    z-index:5;
-
-    width:100%;
-    height:100%;
+    flex:1;
 
     display:flex;
     align-items:center;
 
-    padding:90px 5% 40px;
+    padding:40px 5%;
 }
 
 .hero-content{
@@ -164,141 +134,248 @@ body{
     align-items:center;
     gap:12px;
 
-    margin-bottom:22px;
+    color:var(--red);
 
-    color:#e32732;
-
-    font-size:11px;
+    font-size:10px;
     font-weight:800;
 
     letter-spacing:4px;
     text-transform:uppercase;
+
+    margin-bottom:22px;
 }
 
 .eyebrow::before{
     content:"";
-
     width:34px;
     height:1px;
-
-    background:#e32732;
+    background:var(--red);
 }
 
 .hero h1{
-    font-size:clamp(54px,8vw,105px);
+    font-family:"Space Grotesk",sans-serif;
 
-    line-height:.88;
+    font-size:clamp(55px,8vw,105px);
 
-    font-weight:900;
+    line-height:.87;
+
+    font-weight:700;
 
     letter-spacing:-6px;
 
     text-transform:uppercase;
 
     margin-bottom:28px;
-
-    text-shadow:
-        0 8px 35px rgba(0,0,0,.7);
 }
 
 .hero h1 span{
-    color:#e32732;
+    color:var(--red);
 }
 
 .hero-description{
-    max-width:500px;
+    max-width:490px;
 
-    color:rgba(255,255,255,.68);
+    color:rgba(255,255,255,.7);
 
-    font-size:15px;
+    font-size:14px;
 
     line-height:1.7;
 
-    margin-bottom:34px;
+    margin-bottom:32px;
 }
-
-/* =========================================
-   BUTTON
-========================================= */
 
 .enter-btn{
     display:inline-flex;
     align-items:center;
-    justify-content:center;
     gap:18px;
 
-    padding:15px 24px;
+    border:1px solid var(--red);
 
-    border:1px solid rgba(255,255,255,.25);
-
-    background:#e32732;
+    background:var(--red);
 
     color:#fff;
 
+    padding:15px 23px;
+
     text-decoration:none;
 
-    font-size:12px;
+    font-size:11px;
     font-weight:800;
 
     letter-spacing:1.5px;
 
     text-transform:uppercase;
 
-    transition:
-        transform .25s ease,
-        background .25s ease,
-        box-shadow .25s ease;
+    transition:.25s;
+}
+
+.enter-btn:hover{
+    background:var(--red2);
+    transform:translateY(-3px);
+    box-shadow:0 15px 35px rgba(227,39,50,.25);
 }
 
 .enter-btn span{
     font-size:18px;
-    line-height:0;
 }
 
-.enter-btn:hover{
-    transform:translateY(-3px);
-
-    background:#ff303c;
-
-    box-shadow:
-        0 15px 40px rgba(227,39,50,.25);
-}
-
-/* =========================================
-   BOTTOM INFORMATION
-========================================= */
+/* BOTTOM */
 
 .bottom{
     position:absolute;
 
     left:5%;
     right:5%;
-    bottom:28px;
-
-    z-index:10;
+    bottom:25px;
 
     display:flex;
-    align-items:flex-end;
     justify-content:space-between;
-}
 
-.location{
     color:rgba(255,255,255,.45);
 
-    font-size:10px;
+    font-size:9px;
 
-    letter-spacing:2px;
+    letter-spacing:1.5px;
 
     text-transform:uppercase;
 }
 
-.location strong{
+.bottom strong{
     color:#fff;
-    font-weight:600;
 }
 
-.system{
-    color:rgba(255,255,255,.35);
+/* =========================================
+   LOGIN SCREEN
+========================================= */
+
+#loginScreen{
+    display:none;
+
+    min-height:100vh;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:25px;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(227,39,50,.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(227,39,50,.07),
+            transparent 30%
+        ),
+        #050505;
+}
+
+.login-wrap{
+    width:min(1050px,100%);
+
+    min-height:620px;
+
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+
+    overflow:hidden;
+
+    border:1px solid #292929;
+
+    border-radius:24px;
+
+    background:#0b0b0b;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.65);
+}
+
+/* LOGIN LEFT */
+
+.login-brand{
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    padding:50px;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(227,39,50,.13),
+            transparent 50%
+        ),
+        #0f0f0f;
+}
+
+.login-brand::after{
+    content:"BEAST";
+
+    position:absolute;
+
+    right:-80px;
+    bottom:20px;
+
+    font-family:"Space Grotesk";
+
+    font-size:150px;
+
+    font-weight:800;
+
+    color:rgba(255,255,255,.025);
+
+    transform:rotate(-8deg);
+}
+
+.login-logo{
+    position:relative;
+    z-index:2;
+
+    width:120px;
+}
+
+.login-main{
+    position:relative;
+    z-index:2;
+}
+
+.login-main h1{
+    font-family:"Space Grotesk";
+
+    font-size:clamp(45px,6vw,78px);
+
+    line-height:.9;
+
+    letter-spacing:-5px;
+
+    margin-bottom:25px;
+}
+
+.login-main h1 span{
+    color:var(--red);
+}
+
+.login-main p{
+    max-width:430px;
+
+    color:#888;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.login-footer{
+    position:relative;
+    z-index:2;
+
+    color:#555;
 
     font-size:9px;
 
@@ -307,11 +384,321 @@ body{
     text-transform:uppercase;
 }
 
+/* LOGIN PANEL */
+
+.login-panel{
+    padding:50px 42px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    background:#090909;
+
+    border-left:1px solid var(--line);
+}
+
+.login-panel h2{
+    font-family:"Space Grotesk";
+
+    font-size:32px;
+
+    margin-bottom:7px;
+}
+
+.login-panel > p{
+    color:#777;
+
+    font-size:13px;
+
+    margin-bottom:28px;
+}
+
+/* ROLE */
+
+.role-tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:7px;
+
+    margin-bottom:22px;
+}
+
+.role-tab{
+    border:1px solid var(--line);
+
+    background:#111;
+
+    color:#777;
+
+    padding:11px 5px;
+
+    border-radius:9px;
+
+    font-size:11px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.role-tab:hover{
+    color:#fff;
+}
+
+.role-tab.active{
+    background:var(--red);
+
+    border-color:var(--red);
+
+    color:#fff;
+
+    font-weight:800;
+}
+
+/* FIELDS */
+
+.field{
+    margin-bottom:15px;
+}
+
+.field label{
+    display:block;
+
+    color:#aaa;
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    margin-bottom:7px;
+}
+
+.field input{
+    width:100%;
+
+    border:1px solid var(--line);
+
+    background:#121212;
+
+    color:#fff;
+
+    padding:14px;
+
+    border-radius:9px;
+
+    outline:none;
+
+    font-size:13px;
+
+    transition:.2s;
+}
+
+.field input:focus{
+    border-color:var(--red);
+
+    box-shadow:0 0 0 2px rgba(227,39,50,.08);
+}
+
+/* LOGIN BUTTON */
+
+.login-btn{
+    width:100%;
+
+    border:0;
+
+    background:var(--red);
+
+    color:#fff;
+
+    padding:15px;
+
+    border-radius:9px;
+
+    font-weight:800;
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.login-btn:hover{
+    background:var(--red2);
+
+    transform:translateY(-1px);
+}
+
+/* DEMO */
+
+.demo{
+    margin-top:18px;
+
+    padding:12px;
+
+    border:1px dashed #292929;
+
+    border-radius:9px;
+
+    color:#666;
+
+    font-size:10px;
+
+    line-height:1.7;
+}
+
+.demo strong{
+    color:#aaa;
+}
+
+/* BACK */
+
+.back-btn{
+    border:0;
+
+    background:transparent;
+
+    color:#666;
+
+    margin-top:18px;
+
+    font-size:10px;
+
+    cursor:pointer;
+}
+
+.back-btn:hover{
+    color:#fff;
+}
+
+/* =========================================
+   DASHBOARD PLACEHOLDER
+========================================= */
+
+#dashboardScreen{
+    display:none;
+
+    min-height:100vh;
+
+    padding:30px;
+
+    background:#070707;
+}
+
+.dashboard{
+    max-width:1100px;
+    margin:auto;
+}
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:25px;
+}
+
+.dashboard-header h1{
+    font-family:"Space Grotesk";
+    font-size:32px;
+}
+
+.role-label{
+    color:var(--red);
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+}
+
+.logout{
+    border:1px solid #333;
+
+    background:#111;
+
+    color:#aaa;
+
+    padding:10px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.logout:hover{
+    color:#fff;
+    border-color:#555;
+}
+
+.dashboard-card{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.d-card{
+    padding:25px;
+
+    border:1px solid #252525;
+
+    border-radius:15px;
+
+    background:#101010;
+}
+
+.d-card small{
+    color:#666;
+
+    font-size:10px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+.d-card strong{
+    display:block;
+
+    font-family:"Space Grotesk";
+
+    font-size:35px;
+
+    margin-top:12px;
+}
+
 /* =========================================
    MOBILE
 ========================================= */
 
-@media(max-width:700px){
+@media(max-width:800px){
+
+    .login-wrap{
+        grid-template-columns:1fr;
+    }
+
+    .login-brand{
+        min-height:300px;
+    }
+
+    .login-panel{
+        border-left:0;
+        border-top:1px solid var(--line);
+    }
+
+    .dashboard-card{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
 
     .topbar{
         height:75px;
@@ -319,61 +706,42 @@ body{
     }
 
     .logo{
-        width:100px;
+        width:95px;
     }
 
     .status{
         font-size:8px;
-        letter-spacing:1.5px;
     }
 
     .hero{
-        padding:
-            80px
-            22px
-            70px;
-    }
-
-    .hero-content{
-        max-width:100%;
-    }
-
-    .eyebrow{
-        font-size:9px;
-        letter-spacing:3px;
-        margin-bottom:18px;
+        padding:30px 22px;
     }
 
     .hero h1{
-        font-size:clamp(48px,15vw,75px);
+        font-size:53px;
         letter-spacing:-4px;
-        margin-bottom:22px;
     }
 
     .hero-description{
-        font-size:13px;
-        max-width:360px;
-        margin-bottom:28px;
-    }
-
-    .enter-btn{
-        padding:14px 20px;
-        font-size:10px;
+        font-size:12px;
     }
 
     .bottom{
         left:22px;
         right:22px;
-        bottom:20px;
     }
 
-    .location{
-        font-size:8px;
-        letter-spacing:1px;
+    .login-brand{
+        padding:30px;
+        min-height:260px;
     }
 
-    .system{
-        display:none;
+    .login-panel{
+        padding:30px;
+    }
+
+    .login-main h1{
+        font-size:48px;
     }
 }
 </style>
@@ -381,15 +749,19 @@ body{
 
 <body>
 
-<section class="home">
 
-    <!-- TOP BAR -->
+<!-- =========================================
+     HOMEPAGE
+========================================= -->
+
+<section class="home" id="homeScreen">
+
     <header class="topbar">
 
         <img
             src="beast-mode-logo.png"
-            alt="Beast Mode Fitness Studio"
             class="logo"
+            alt="Beast Mode Fitness Studio"
         >
 
         <div class="status">
@@ -400,7 +772,6 @@ body{
     </header>
 
 
-    <!-- HERO -->
     <main class="hero">
 
         <div class="hero-content">
@@ -421,7 +792,11 @@ body{
                 members, trainers and gym operations.
             </p>
 
-            <a href="#login" class="enter-btn">
+            <a
+                href="#"
+                class="enter-btn"
+                onclick="showLogin(); return false;"
+            >
                 Enter Management System
                 <span>→</span>
             </a>
@@ -431,22 +806,394 @@ body{
     </main>
 
 
-    <!-- BOTTOM -->
     <div class="bottom">
 
-        <div class="location">
+        <div>
             <strong>BEAST MODE FITNESS STUDIO</strong>
             &nbsp; · &nbsp;
             MANGALURU
         </div>
 
-        <div class="system">
-            Gym Management · V1
+        <div>
+            GYM MANAGEMENT · V1
         </div>
 
     </div>
 
 </section>
+
+
+<!-- =========================================
+     LOGIN
+========================================= -->
+
+<section id="loginScreen">
+
+    <div class="login-wrap">
+
+        <div class="login-brand">
+
+            <img
+                src="beast-mode-logo.png"
+                class="login-logo"
+                alt="Beast Mode"
+            >
+
+            <div class="login-main">
+
+                <div class="eyebrow">
+                    Secure Access
+                </div>
+
+                <h1>
+                    RUN THE<br>
+                    <span>GYM.</span>
+                </h1>
+
+                <p>
+                    Access the Beast Mode digital management
+                    system for members, trainers and gym owners.
+                </p>
+
+            </div>
+
+            <div class="login-footer">
+                Beast Mode Fitness Studio · Mangaluru
+            </div>
+
+        </div>
+
+
+        <div class="login-panel">
+
+            <h2>Welcome back.</h2>
+
+            <p>
+                Select your account and sign in.
+            </p>
+
+
+            <div class="role-tabs">
+
+                <button
+                    class="role-tab active"
+                    onclick="selectRole('owner',this)"
+                >
+                    OWNER
+                </button>
+
+                <button
+                    class="role-tab"
+                    onclick="selectRole('trainer',this)"
+                >
+                    TRAINER
+                </button>
+
+                <button
+                    class="role-tab"
+                    onclick="selectRole('member',this)"
+                >
+                    MEMBER
+                </button>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>LOGIN ID</label>
+
+                <input
+                    id="loginId"
+                    type="text"
+                    placeholder="Enter login ID"
+                    autocomplete="username"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>PASSWORD</label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    onkeydown="if(event.key==='Enter') login()"
+                >
+
+            </div>
+
+
+            <button
+                class="login-btn"
+                onclick="login()"
+            >
+                LOGIN →
+            </button>
+
+
+            <div class="demo">
+
+                <strong>V1 DEMO ACCESS</strong><br>
+
+                Owner:
+                <b>owner</b> /
+                <b>admin123</b><br>
+
+                Trainer:
+                <b>trainer</b> /
+                <b>trainer123</b><br>
+
+                Member:
+                <b>BM1001</b> /
+                <b>18022007</b>
+
+            </div>
+
+
+            <button
+                class="back-btn"
+                onclick="showHome()"
+            >
+                ← Back to homepage
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     TEMPORARY DASHBOARD
+========================================= -->
+
+<section id="dashboardScreen">
+
+    <div class="dashboard">
+
+        <div class="dashboard-header">
+
+            <div>
+                <div class="role-label" id="dashboardRole">
+                    OWNER
+                </div>
+
+                <h1 id="dashboardTitle">
+                    Dashboard
+                </h1>
+            </div>
+
+            <button
+                class="logout"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="d-card">
+                <small>Total Members</small>
+                <strong>126</strong>
+            </div>
+
+            <div class="d-card">
+                <small>Today's Attendance</small>
+                <strong>43</strong>
+            </div>
+
+            <div class="d-card">
+                <small>Fees Due</small>
+                <strong>14</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+let currentRole = "owner";
+
+
+/* =========================================
+   SHOW LOGIN
+========================================= */
+
+function showLogin(){
+
+    document.getElementById("homeScreen").style.display="none";
+
+    document.getElementById("loginScreen").style.display="flex";
+
+    document.getElementById("dashboardScreen").style.display="none";
+
+}
+
+
+/* =========================================
+   SHOW HOME
+========================================= */
+
+function showHome(){
+
+    document.getElementById("homeScreen").style.display="flex";
+
+    document.getElementById("loginScreen").style.display="none";
+
+    document.getElementById("dashboardScreen").style.display="none";
+
+}
+
+
+/* =========================================
+   SELECT ROLE
+========================================= */
+
+function selectRole(role,button){
+
+    currentRole=role;
+
+    document
+        .querySelectorAll(".role-tab")
+        .forEach(tab=>{
+            tab.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    document.getElementById("loginId").value="";
+    document.getElementById("loginPassword").value="";
+
+    document.getElementById("loginId").focus();
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+function login(){
+
+    const id =
+        document
+        .getElementById("loginId")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("loginPassword")
+        .value
+        .trim();
+
+
+    let valid=false;
+
+
+    if(
+        currentRole==="owner" &&
+        id==="owner" &&
+        password==="admin123"
+    ){
+        valid=true;
+    }
+
+
+    if(
+        currentRole==="trainer" &&
+        id==="trainer" &&
+        password==="trainer123"
+    ){
+        valid=true;
+    }
+
+
+    if(
+        currentRole==="member" &&
+        id==="BM1001" &&
+        password==="18022007"
+    ){
+        valid=true;
+    }
+
+
+    if(!valid){
+
+        alert("Invalid login details.");
+
+        return;
+    }
+
+
+    document.getElementById("homeScreen").style.display="none";
+
+    document.getElementById("loginScreen").style.display="none";
+
+    document.getElementById("dashboardScreen").style.display="block";
+
+
+    const roleText =
+        currentRole.toUpperCase();
+
+    document.getElementById("dashboardRole")
+        .textContent=roleText;
+
+
+    if(currentRole==="owner"){
+
+        document.getElementById("dashboardTitle")
+            .textContent="Owner Dashboard";
+
+    }
+
+    if(currentRole==="trainer"){
+
+        document.getElementById("dashboardTitle")
+            .textContent="Trainer Dashboard";
+
+    }
+
+    if(currentRole==="member"){
+
+        document.getElementById("dashboardTitle")
+            .textContent="Member Dashboard";
+
+    }
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logout(){
+
+    document.getElementById("dashboardScreen").style.display="none";
+
+    document.getElementById("loginScreen").style.display="flex";
+
+    document.getElementById("loginId").value="";
+
+    document.getElementById("loginPassword").value="";
+
+}
+
+</script>
 
 </body>
 </html>
