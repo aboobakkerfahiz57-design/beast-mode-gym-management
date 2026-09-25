@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -28,7 +28,6 @@
   -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
   <style>
     :root{
@@ -683,40 +682,57 @@
     const box=document.getElementById("qrCanvas");
     const text=document.getElementById("qrText");
     if(!box) return;
+
     const target=attendanceQRTarget();
     if(text) text.textContent=target;
 
-    // Use an <img> generated from a data URL. This is more reliable than a
-    // canvas-only render on GitHub Pages and also gives us a real image to
-    // download.
-    if(!window.QRCode || typeof window.QRCode.toDataURL!=="function") {
-      box.outerHTML='<div id="qrCanvas" class="danger-note" style="width:220px;text-align:center">QR generator could not load. Refresh the page and try again.</div>';
-      return;
-    }
+    /*
+      Use a hosted QR image endpoint instead of a JavaScript QR library.
+      This avoids CDN/library-loading failures on GitHub Pages.
+      The QR contains only the browser-safe Supabase publishable key.
+    */
+    const qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data="+encodeURIComponent(target);
 
-    try{
-      const dataUrl=await QRCode.toDataURL(target,{width:260,margin:2,errorCorrectionLevel:"M",color:{dark:"#000000",light:"#ffffff"}});
-      const img=document.createElement("img");
-      img.id="qrCanvas";
-      img.alt="Beast Mode Gym Attendance QR";
-      img.width=260;
-      img.height=260;
-      img.style.display="block";
-      img.src=dataUrl;
-      box.replaceWith(img);
+    const img=document.createElement("img");
+    img.id="qrCanvas";
+    img.alt="Beast Mode Gym Attendance QR";
+    img.width=320;
+    img.height=320;
+    img.style.display="block";
+    img.style.width="320px";
+    img.style.height="320px";
+    img.style.maxWidth="100%";
+    img.style.imageRendering="pixelated";
+    img.loading="eager";
 
-      if(download){
+    img.onerror=()=>{
+      img.outerHTML='<div id="qrCanvas" class="danger-note" style="width:280px;text-align:center">QR generator could not load. Check your internet connection and refresh the page.</div>';
+      notify("QR generator could not load.",true);
+    };
+
+    img.onload=async()=>{
+      if(!download) return;
+      try{
+        const response=await fetch(qrUrl,{mode:"cors",cache:"no-store"});
+        if(!response.ok) throw new Error("QR download failed");
+        const blob=await response.blob();
+        const blobUrl=URL.createObjectURL(blob);
         const a=document.createElement("a");
         a.download="beast-mode-gym-attendance-qr.png";
-        a.href=dataUrl;
+        a.href=blobUrl;
         document.body.appendChild(a);
         a.click();
         a.remove();
+        setTimeout(()=>URL.revokeObjectURL(blobUrl),1000);
+      }catch(_){
+        // If the browser blocks cross-origin downloading, open the generated
+        // QR image in a new tab so it can still be saved/printed.
+        window.open(qrUrl,"_blank","noopener,noreferrer");
       }
-    }catch(err){
-      box.outerHTML='<div id="qrCanvas" class="danger-note" style="width:260px;text-align:center">Could not generate the attendance QR. Please refresh and try again.</div>';
-      notify(err.message||"Could not generate QR.",true);
-    }
+    };
+
+    box.replaceWith(img);
+    img.src=qrUrl;
   }
 
   window.addEventListener("hashchange",()=>{state.route=location.hash.replace(/^#/,"")||"dashboard"; if(state.route==="checkin"){renderCheckin()}else render()});
