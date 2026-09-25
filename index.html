@@ -388,7 +388,7 @@
           ${field("studio_name","Studio name",s.studio_name||"BEAST MODE FITNESS STUDIO")}${field("tagline","Tagline",s.tagline||"TRAIN HARD. STAY INTENSE.")}${field("phone","Phone",s.phone||"")}${field("email","Email",s.email||"","email")}${field("gst_number","GST number",s.gst_number||"")}${field("address","Address",s.address||"","text","span2")}${field("opening_hours","Opening hours",s.opening_hours||"","text","span2")}
           <div class="span2"><button class="btn btn-primary" type="submit">SAVE SETTINGS</button></div>
         </form></div>
-        <div class="card"><h3>Backend</h3><p class="muted">Connected project:</p><div class="mini" style="word-break:break-all">${esc(state.config.url||"Not configured")}</div><div class="row" style="margin-top:16px"><button class="btn" onclick="openSetup()">CHANGE CONNECTION</button><button class="btn" onclick="downloadQR()">DOWNLOAD QR</button></div><div class="qr-box" style="margin-top:20px"><canvas id="qrCanvas"></canvas></div><p class="mini" style="text-align:center;margin-top:10px">Permanent gym QR → <span id="qrText"></span></p></div>
+        <div class="card"><h3>Backend</h3><p class="muted">Connected project:</p><div class="mini" style="word-break:break-all">${esc(state.config.url||"Not configured")}</div><div class="row" style="margin-top:16px"><button class="btn" onclick="openSetup()">CHANGE CONNECTION</button><button class="btn" onclick="downloadQR()">DOWNLOAD GYM ATTENDANCE QR</button></div><div class="qr-box" style="margin-top:20px"><canvas id="qrCanvas"></canvas></div><p class="mini" style="text-align:center;margin-top:10px">Permanent gym attendance QR → <span id="qrText"></span></p></div>
       </div>`;
   }
   function field(name,label,value="",type="text",cls=""){return `<div class="field ${cls}"><label>${label}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}"></div>`}
@@ -458,40 +458,78 @@
   async function renderCheckin(){
     app.innerHTML=`<div class="checkin-page"><div class="checkin-card">
       <div class="brand"><div class="brand-mark">BM</div><div><div class="brand-title">BEAST MODE</div><div class="brand-sub">Fitness Studio</div></div></div>
-      <div class="hero"><div class="eyebrow">Gym attendance</div><h1 style="font-size:42px">CHECK IN.</h1><p class="muted">Identify yourself securely. Your check-in time is recorded automatically.</p></div>
+      <div class="hero"><div class="eyebrow">Gym attendance</div><h1 style="font-size:42px">CHECK IN / OUT.</h1><p class="muted">Use your Member ID and date of birth. The server records the exact time automatically.</p></div>
       <form id="checkinForm" class="grid">
-        <div class="field"><label>Member ID</label><input id="ciCode" required placeholder="BM1001" autocapitalize="characters"></div>
-        <div class="field"><label>Date of birth / temporary credential</label><input id="ciSecret" required type="password" placeholder="Your DOB or password"></div>
-        <button class="btn btn-primary" type="submit">VERIFY & CHECK IN</button>
+        <div class="field"><label>Member ID</label><input id="ciCode" required placeholder="BM1001" autocapitalize="characters" autocomplete="off"></div>
+        <div class="field"><label>Date of birth</label><input id="ciSecret" required type="text" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="bday" maxlength="10"></div>
+        <div class="row" style="gap:10px">
+          <button class="btn btn-primary" type="submit" name="attendanceAction" value="check_in" style="flex:1">CHECK IN</button>
+          <button class="btn btn-danger" type="button" onclick="submitCheckoutFromQR()" style="flex:1">CHECK OUT</button>
+        </div>
       </form>
       <div id="ciResult"></div>
-      <div class="row space" style="margin-top:18px"><button class="btn" onclick="location.hash='login';state.route='login';render()">STAFF / MEMBER LOGIN</button><span class="mini">Scan the permanent gym QR to return here.</span></div>
+      <div class="checkin-status">
+        <div class="mini">IMPORTANT</div>
+        <b>One permanent QR for the gym</b>
+        <div class="mini" style="margin-top:6px">Scan the same QR when you enter and when you leave.</div>
+      </div>
+      <div class="row space" style="margin-top:18px"><button class="btn" onclick="location.hash='login';state.route='login';render()">STAFF / MEMBER LOGIN</button><span class="mini">Attendance is recorded in the gym database.</span></div>
     </div></div>`;
+  }
+
+  async function qrCredentials(){
+    const code=document.getElementById("ciCode")?.value.trim().toUpperCase();
+    const secret=document.getElementById("ciSecret")?.value.trim();
+    const out=document.getElementById("ciResult");
+    if(!code || !secret){
+      if(out) out.innerHTML=`<div class="danger-note">Enter your Member ID and date of birth first.</div>`;
+      return null;
+    }
+    if(!state.supabase){
+      if(out) out.innerHTML=`<div class="danger-note">The attendance service is not connected. Please contact the gym.</div>`;
+      return null;
+    }
+    return {code,secret,out};
   }
 
   document.addEventListener("submit",async e=>{
     if(e.target.id!=="checkinForm")return;
     e.preventDefault();
-    const code=document.getElementById("ciCode").value.trim().toUpperCase();
-    const secret=document.getElementById("ciSecret").value;
-    const out=document.getElementById("ciResult");
-    if(!state.supabase){out.innerHTML=`<div class="danger-note">Backend is not configured. The check-in cannot be recorded safely.</div>`;return}
+    const c=await qrCredentials();
+    if(!c)return;
     try{
-      // This RPC is intentionally required for production. It must verify the member
-      // credential server-side and create/return the attendance record using server time.
-      const {data,error}=await state.supabase.rpc("member_check_in",{p_member_code:code,p_credential:secret});
+      const {data,error}=await state.supabase.rpc("member_check_in",{p_member_code:c.code,p_credential:c.secret});
       if(error) throw error;
-      out.innerHTML=`<div class="success-note">Checked in successfully. ${esc(data?.message||"Your attendance has been recorded.")}</div>`;
+      c.out.innerHTML=`<div class="success-note"><b>CHECK-IN SUCCESSFUL</b><br>${esc(data?.member_name||c.code)} is now checked in.<br><span class="mini">Check-in time: ${esc(dateTime(data?.check_in_at))}</span></div>`;
+      document.getElementById("ciCode").value=c.code;
     }catch(err){
-      out.innerHTML=`<div class="danger-note">${esc(err.message||"Check-in failed.")}</div>`;
+      c.out.innerHTML=`<div class="danger-note">${esc(err.message||"Check-in failed.")}</div>`;
     }
   });
 
-  window.memberCheckOut=async()=>{
+  window.submitCheckoutFromQR=async()=>{
+    const c=await qrCredentials();
+    if(!c)return;
     try{
-      const {data,error}=await state.supabase.rpc("member_check_out");
+      const {data,error}=await state.supabase.rpc("member_check_out",{p_member_code:c.code,p_credential:c.secret});
+      if(error) throw error;
+      const mins=Number(data?.duration_minutes||0);
+      const duration=`${Math.floor(mins/60)}h ${mins%60}m`;
+      c.out.innerHTML=`<div class="success-note"><b>CHECK-OUT SUCCESSFUL</b><br>${esc(data?.member_name||c.code)} has checked out.<br><span class="mini">Check-out: ${esc(dateTime(data?.check_out_at))} · Workout duration: <b>${duration}</b></span></div>`;
+    }catch(err){
+      c.out.innerHTML=`<div class="danger-note">${esc(err.message||"Check-out failed.")}</div>`;
+    }
+  };
+
+  window.memberCheckOut=async()=>{
+    if(!state.supabase) return notify("Attendance service is not connected.",true);
+    const m=state.cache.members.find(x=>x.profile_id===state.session?.user?.id||x.user_id===state.session?.user?.id)||state.cache.members[0];
+    if(!m?.member_code || !m?.date_of_birth) return notify("Member profile is missing Member ID or date of birth.",true);
+    try{
+      const {data,error}=await state.supabase.rpc("member_check_out",{p_member_code:m.member_code,p_credential:m.date_of_birth});
       if(error)throw error;
-      notify("Checked out successfully."); await loadCache();renderView();
+      notify(`Checked out. Duration: ${Math.floor(Number(data?.duration_minutes||0)/60)}h ${Number(data?.duration_minutes||0)%60}m`);
+      await loadCache(); render();
     }catch(e){notify(e.message,true)}
   };
 
