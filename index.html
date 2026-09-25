@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -131,18 +131,41 @@
 
   async function db(table, opts={}){
     if(!state.supabase) throw new Error("Supabase is not configured. Open Settings → Backend.");
+
+    // IMPORTANT: mutations must be started from the PostgREST query builder.
+    // Calling .select() first changes the builder into a filter builder, which
+    // does not expose .insert/.update/.upsert/.delete and causes errors such as
+    // “q.insert is not a function”.
     let q=state.supabase.from(table);
-    if(opts.select!==false) q=q.select(opts.columns||"*");
-    if(opts.eq) for(const [k,v] of Object.entries(opts.eq)) q=q.eq(k,v);
-    if(opts.order) q=q.order(opts.order.column,{ascending:opts.order.asc!==false});
-    if(opts.limit) q=q.limit(opts.limit);
-    if(opts.single) q=q.single();
     let r;
-    if(opts.method==="insert") r=await q.insert(opts.data).select(opts.columns||"*");
-    else if(opts.method==="update") r=await q.update(opts.data).select(opts.columns||"*");
-    else if(opts.method==="upsert") r=await q.upsert(opts.data).select(opts.columns||"*");
-    else if(opts.method==="delete") r=await q.delete().select(opts.columns||"*");
-    else r=await q;
+
+    if(opts.method==="insert") {
+      r=q.insert(opts.data);
+      if(opts.select!==false) r=r.select(opts.columns||"*");
+    } else if(opts.method==="update") {
+      r=q.update(opts.data);
+      if(opts.eq) for(const [k,v] of Object.entries(opts.eq)) r=r.eq(k,v);
+      if(opts.select!==false) r=r.select(opts.columns||"*");
+    } else if(opts.method==="upsert") {
+      r=q.upsert(opts.data);
+      if(opts.select!==false) r=r.select(opts.columns||"*");
+    } else if(opts.method==="delete") {
+      r=q.delete();
+      if(opts.eq) for(const [k,v] of Object.entries(opts.eq)) r=r.eq(k,v);
+      if(opts.select!==false) r=r.select(opts.columns||"*");
+    } else {
+      r=q.select(opts.columns||"*");
+      if(opts.eq) for(const [k,v] of Object.entries(opts.eq)) r=r.eq(k,v);
+      if(opts.order) r=r.order(opts.order.column,{ascending:opts.order.asc!==false});
+      if(opts.limit) r=r.limit(opts.limit);
+      if(opts.single) r=r.single();
+    }
+
+    if(opts.method!=="insert" && opts.method!=="update" && opts.method!=="upsert" && opts.method!=="delete") {
+      // read query already has its filters above
+    }
+
+    r=await r;
     if(r.error) throw r.error;
     return r.data;
   }
