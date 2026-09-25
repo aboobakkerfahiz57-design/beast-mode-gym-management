@@ -17,6 +17,7 @@
 
     Expected Supabase tables:
       profiles, members, trainers, membership_plans, memberships, payments,
+      members.photo_url, members.trainer_id
       expenses, attendance, workout_sessions, workout_exercises,
       studio_settings, activity_logs
 
@@ -74,7 +75,7 @@
     .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;padding:20px;z-index:80}.modal-card{width:min(900px,100%);max-height:92vh;overflow:auto;background:#111317;border:1px solid var(--line);border-radius:22px;padding:22px}
     .mobile-nav{display:none}.danger-note{padding:12px;border-radius:12px;background:#291115;border:1px solid #64202a;color:#ffb0b7;font-size:13px}
     .success-note{padding:12px;border-radius:12px;background:#0d2116;border:1px solid #1f5f37;color:#a4f4bc;font-size:13px}
-    .qr-box{display:grid;place-items:center;background:#fff;border-radius:18px;padding:18px;width:max-content;margin:auto}.qr-box canvas{display:block}
+    .photo-preview{width:96px;height:96px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0c0e11;display:grid;place-items:center;font-weight:900}.photo-preview img{width:100%;height:100%;object-fit:cover}.quick-amounts{display:flex;gap:8px;flex-wrap:wrap}.quick-amounts button{padding:8px 12px;border-radius:999px;background:#181b20;border:1px solid #343943;color:#fff;font-weight:800}.quick-amounts button:hover{border-color:var(--red);background:#241015}.amount-box{font-size:24px!important;font-weight:900!important;letter-spacing:.02em}.danger-actions{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.qr-box{display:grid;place-items:center;background:#fff;border-radius:18px;padding:18px;width:max-content;margin:auto}.qr-box canvas{display:block}
     .checkin-page{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 0,rgba(225,29,46,.18),transparent 45%),#08090b}
     .checkin-card{width:min(520px,100%);background:#111317;border:1px solid var(--line);border-radius:26px;padding:28px;box-shadow:var(--shadow)}
     .checkin-status{text-align:center;padding:18px;border-radius:16px;background:#0c0e11;border:1px solid var(--line);margin:16px 0}
@@ -309,16 +310,16 @@
 
   function membersView(){
     const list=state.cache.members;
-    return `<div class="page-head"><div><div class="eyebrow">People</div><h2>Members</h2><div class="muted">Real member records from the database.</div></div><button class="btn btn-primary" onclick="memberModal()">+ ADD MEMBER</button></div>
-      <div class="card"><div class="row"><input id="memberSearch" style="flex:1;min-width:220px;background:#0c0e11;border:1px solid #2b3038;color:#fff;border-radius:10px;padding:11px 12px" placeholder="Search name, BM code, phone..." oninput="filterMembers()"></div><div id="memberTable" style="margin-top:14px">${memberTable(list)}</div></div>`;
+    return `<div class="page-head"><div><div class="eyebrow">People</div><h2>Members</h2><div class="muted">Complete member records, memberships, payments and status.</div></div><button class="btn btn-primary" onclick="memberModal()">+ ADD MEMBER</button></div>
+      <div class="card"><div class="row"><input id="memberSearch" style="flex:1;min-width:220px;background:#0c0e11;border:1px solid #2b3038;color:#fff;border-radius:10px;padding:11px 12px" placeholder="Search name, BM code, phone..." oninput="filterMembers()"><span class="badge">${list.length} TOTAL</span></div><div id="memberTable" style="margin-top:14px">${memberTable(list)}</div></div>`;
   }
   function memberTable(list){
     if(!list.length) return empty("No members yet.","Create the first real member from the button above.");
-    return `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Member</th><th>Phone</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(m=>`<tr><td><b>${esc(m.member_code||"—")}</b></td><td><div class="row"><div style="width:34px;height:34px;border-radius:10px;background:#272a31;display:grid;place-items:center;font-weight:900">${initials(m.full_name)}</div><div><b>${esc(m.full_name)}</b><div class="mini">${esc(m.email||"")}</div></div></div></td><td>${esc(m.phone||"—")}</td><td>${dateOnly(m.joining_date)}</td><td><span class="badge ${m.status==="active"?"green":"red"}">${esc(m.status||"—")}</span></td><td><div class="row"><button class="btn" onclick="viewMember('${m.id}')">VIEW</button><button class="btn" onclick="memberModal('${m.id}')">EDIT</button></div></td></tr>`).join("")}</tbody></table></div>`;
+    return `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Member</th><th>Phone</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(m=>`<tr><td><b>${esc(m.member_code||"—")}</b></td><td><div class="row"><div class="photo-preview" style="width:42px;height:42px;border-radius:12px">${m.photo_url?`<img src="${esc(m.photo_url)}" alt="">`:initials(m.full_name)}</div><div><b>${esc(m.full_name)}</b><div class="mini">${esc(m.email||"")}</div></div></div></td><td>${esc(m.phone||"—")}</td><td>${dateOnly(m.joining_date)}</td><td><span class="badge ${m.status==="active"?"green":"red"}">${esc(m.status||"—")}</span></td><td><div class="row"><button class="btn" onclick="viewMember('${m.id}')">VIEW</button><button class="btn" onclick="memberModal('${m.id}')">EDIT</button>${m.status==="active"?`<button class="btn btn-danger" onclick="cancelMember('${m.id}')">CANCEL</button>`:`<button class="btn btn-success" onclick="reactivateMember('${m.id}')">REACTIVATE</button>`}</div></td></tr>`).join("")}</tbody></table></div>`;
   }
   function filterMembers(){
     const q=(document.getElementById("memberSearch")?.value||"").toLowerCase();
-    document.getElementById("memberTable").innerHTML=memberTable(state.cache.members.filter(m=>[m.full_name,m.member_code,m.phone,m.email].join(" ").toLowerCase().includes(q)));
+    const el=document.getElementById("memberTable"); if(el) el.innerHTML=memberTable(state.cache.members.filter(m=>[m.full_name,m.member_code,m.phone,m.email].join(" ").toLowerCase().includes(q)));
   }
 
   function attendanceView(){
@@ -500,40 +501,89 @@
   }
   window.closeModal=()=>modal.classList.add("hidden");
 
+  function trainerOptions(selected=""){
+    return `<option value="">No trainer assigned</option>`+state.cache.trainers.filter(t=>t.active!==false).map(t=>`<option value="${esc(t.id)}" ${String(t.id)===String(selected)?"selected":""}>${esc(t.full_name)}</option>`).join("");
+  }
+  function planOptions(selected=""){
+    return `<option value="">No membership plan</option>`+state.cache.plans.filter(p=>p.active!==false).map(p=>`<option value="${esc(p.id)}" data-price="${Number(p.price||0)}" data-days="${Number(p.duration_days||30)}" ${String(p.id)===String(selected)?"selected":""}>${esc(p.name)} — ${money(p.price)}</option>`).join("");
+  }
   function memberModal(memberId=null){
     const m=state.cache.members.find(x=>x.id===memberId)||{};
-    showModal(memberId?"Edit member":"Add member",`<form id="memberForm" class="form-grid">
-      ${field("m_full_name","Full name",m.full_name||"")}${field("m_phone","Phone",m.phone||"")}${field("m_email","Email",m.email||"","email")}${field("m_dob","Date of birth",m.date_of_birth||"","date")}${field("m_gender","Gender",m.gender||"")} ${field("m_joining","Joining date",m.joining_date||todayISO(),"date")}${field("m_address","Address",m.address||"","text","span2")}${field("m_emergency","Emergency contact",m.emergency_contact||"")}${field("m_emergency_phone","Emergency phone",m.emergency_phone||"")}${field("m_notes","Notes",m.notes||"","text","span2")}
-      <div class="span2 row"><button class="btn btn-primary" type="submit">${memberId?"SAVE CHANGES":"CREATE MEMBER"}</button></div>
+    const ms=state.cache.memberships.find(x=>x.member_id===memberId && x.status!=="cancelled")||{};
+    const paid=state.cache.payments.filter(p=>p.member_id===memberId && p.status!=="pending").reduce((sum,p)=>sum+Number(p.amount||0),0);
+    const plan=state.cache.plans.find(p=>p.id===ms.plan_id);
+    const currentFee=Number(ms.agreed_fee||plan?.price||800);
+    const currentPaid=memberId?paid:800;
+    showModal(memberId?"EDIT MEMBER":"ADD MEMBER",`<form id="memberForm" class="form-grid">
+      <div class="card span2" style="padding:16px"><div class="row" style="align-items:flex-start"><div class="photo-preview" id="memberPhotoPreview">${m.photo_url?`<img src="${esc(m.photo_url)}" alt="Member photo">`:initials(m.full_name||"Member")}</div><div class="grid" style="flex:1"><div><b>Member photo</b><div class="mini">Upload a clear profile photo. It is stored with the member record.</div></div><input id="m_photo" type="file" accept="image/*" onchange="previewMemberPhoto(event)"><input type="hidden" id="m_photo_data" value="${esc(m.photo_url||"")}"></div></div></div>
+      ${field("m_full_name","Full name",m.full_name||"")}${field("m_phone","Phone",m.phone||"")}${field("m_email","Email",m.email||"","email")}${field("m_dob","Date of birth",m.date_of_birth||"","date")}${field("m_gender","Gender",m.gender||"male")}${field("m_joining","Joining date",m.joining_date||todayISO(),"date")}
+      ${field("m_address","Address",m.address||"","text","span2")}${field("m_emergency","Emergency contact",m.emergency_contact||"")}${field("m_emergency_phone","Emergency phone",m.emergency_phone||"")}${field("m_notes","Notes",m.notes||"","text","span2")}
+      <div class="card span2" style="padding:16px"><div class="row space"><div><div class="eyebrow">Membership & payment</div><h3 style="margin:4px 0">Everything is recorded together</h3></div><span class="badge green">ONE FORM</span></div><div class="form-grid" style="margin-top:14px">
+        <div class="field"><label>Membership plan</label><select id="m_plan" onchange="syncMemberFee()">${planOptions(ms.plan_id||"")}</select></div>
+        <div class="field"><label>Assigned trainer</label><select id="m_trainer">${trainerOptions(m.trainer_id||"")}</select></div>
+        <div class="field"><label>Total membership fee</label><input id="m_fee" class="amount-box" type="number" min="0" step="1" inputmode="numeric" value="${currentFee}" oninput="syncMemberBalance()"></div>
+        <div class="field"><label>Amount paid now</label><input id="m_paid" class="amount-box" type="number" min="0" step="1" inputmode="numeric" value="${currentPaid}" oninput="syncMemberBalance()"></div>
+        <div class="field span2"><label>Quick amount</label><div class="quick-amounts"><button type="button" onclick="setMemberPaid(600)">₹600</button><button type="button" onclick="setMemberPaid(700)">₹700</button><button type="button" onclick="setMemberPaid(800)">₹800</button><button type="button" onclick="setMemberPaid(900)">₹900</button><button type="button" onclick="setMemberPaid(1000)">₹1,000</button><button type="button" onclick="setMemberPaid(Number(document.getElementById('m_fee').value||0))">FULL FEE</button></div></div>
+        <div class="field"><label>Payment method</label><select id="m_method"><option value="Cash">Cash</option><option value="UPI">UPI</option><option value="Bank Transfer">Bank Transfer</option><option value="Other">Other</option></select></div>
+        <div class="field"><label>Payment date</label><input id="m_payment_date" type="date" value="${todayISO()}"></div>
+        <div class="span2" id="memberBalanceBox"></div>
+      </div></div>
+      <div class="span2 row"><button class="btn btn-primary" type="submit">${memberId?"SAVE ALL CHANGES":"CREATE MEMBER + MEMBERSHIP + PAYMENT"}</button></div>
       <input type="hidden" id="m_id" value="${esc(memberId||"")}">
     </form>`);
+    syncMemberBalance();
   }
   window.memberModal=memberModal;
+  window.setMemberPaid=(n)=>{const el=document.getElementById("m_paid");if(el){el.value=String(n);syncMemberBalance()}};
+  window.syncMemberFee=()=>{const s=document.getElementById("m_plan"),o=s?.selectedOptions?.[0];if(o&&o.dataset.price){document.getElementById("m_fee").value=o.dataset.price;syncMemberBalance()}};
+  window.syncMemberBalance=()=>{const fee=Number(document.getElementById("m_fee")?.value||0),paid=Number(document.getElementById("m_paid")?.value||0),due=Math.max(0,fee-paid);const box=document.getElementById("memberBalanceBox");if(box)box.innerHTML=`<div class="success-note"><div class="row space"><span>Total fee <b>${money(fee)}</b></span><span>Paid now <b>${money(paid)}</b></span><span>Balance <b>${money(due)}</b></span></div></div>`};
+  window.previewMemberPhoto=async e=>{const f=e.target.files?.[0];if(!f)return;try{const data=await compressPhoto(f);document.getElementById("m_photo_data").value=data;document.getElementById("memberPhotoPreview").innerHTML=`<img src="${esc(data)}" alt="Member photo">`}catch(err){notify(err.message,true)}};
+  function compressPhoto(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error("Could not read the photo."));reader.onload=()=>{const img=new Image();img.onload=()=>{const max=640,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(img.width*scale));c.height=Math.max(1,Math.round(img.height*scale));const ctx=c.getContext("2d");ctx.drawImage(img,0,0,c.width,c.height);resolve(c.toDataURL("image/jpeg",.72))};img.onerror=()=>reject(new Error("Invalid image."));img.src=reader.result};reader.readAsDataURL(file)})}
 
   document.addEventListener("submit",async e=>{
     if(e.target.id!=="memberForm")return;
     e.preventDefault();
+    const button=e.target.querySelector('button[type="submit"]'); if(button)button.disabled=true;
     try{
-      const data={full_name:document.getElementById("m_full_name").value.trim(),phone:document.getElementById("m_phone").value.trim(),email:document.getElementById("m_email").value.trim(),date_of_birth:document.getElementById("m_dob").value,gender:document.getElementById("m_gender").value.trim(),joining_date:document.getElementById("m_joining").value,address:document.getElementById("m_address").value.trim(),emergency_contact:document.getElementById("m_emergency").value.trim(),emergency_phone:document.getElementById("m_emergency_phone").value.trim(),notes:document.getElementById("m_notes").value.trim(),status:"active",updated_at:nowISO()};
       const mid=document.getElementById("m_id").value;
-      if(mid){await db("members",{method:"update",eq:{id:mid},data});await logAction("member_updated","Member updated","member",mid);notify("Member updated.");}
-      else{
-        // member_code generation should be performed by the database trigger/function.
-        await db("members",{method:"insert",data:{...data,id:id(),created_at:nowISO()}});
-        await logAction("member_created","Member created","member",null);notify("Member created.");
+      const planId=document.getElementById("m_plan").value||null;
+      const trainerId=document.getElementById("m_trainer").value||null;
+      const fee=Number(document.getElementById("m_fee").value||0);
+      const paid=Number(document.getElementById("m_paid").value||0);
+      const data={full_name:document.getElementById("m_full_name").value.trim(),phone:document.getElementById("m_phone").value.trim(),email:document.getElementById("m_email").value.trim(),date_of_birth:document.getElementById("m_dob").value,gender:document.getElementById("m_gender").value.trim(),joining_date:document.getElementById("m_joining").value,address:document.getElementById("m_address").value.trim(),emergency_contact:document.getElementById("m_emergency").value.trim(),emergency_phone:document.getElementById("m_emergency_phone").value.trim(),notes:document.getElementById("m_notes").value.trim(),status:"active",updated_at:nowISO(),trainer_id:trainerId,photo_url:document.getElementById("m_photo_data").value||null};
+      if(mid){
+        await db("members",{method:"update",eq:{id:mid},data});
+        const existing=state.cache.memberships.find(x=>x.member_id===mid && x.status!=="cancelled");
+        if(existing && planId){const po=state.cache.plans.find(x=>x.id===planId);const days=Number(po?.duration_days||30);const start=existing.start_date||document.getElementById("m_joining").value;const end=new Date(start);end.setDate(end.getDate()+days);await db("memberships",{method:"update",eq:{id:existing.id},data:{plan_id:planId,agreed_fee:fee,trainer_id:trainerId,status:"active",end_date:end.toISOString().slice(0,10),updated_at:nowISO()}})}
+        if(paid>0){await db("payments",{method:"insert",data:{id:id(),member_id:mid,amount:paid,payment_method:document.getElementById("m_method").value,paid_at:new Date(document.getElementById("m_payment_date").value).toISOString(),status:paid>=fee&&fee>0?"paid":"partial",notes:"Payment recorded from member edit",created_at:nowISO()}})}
+        await logAction("member_updated","Member and financial details updated","member",mid);notify("Member updated successfully.");
+      } else {
+        const created=await db("members",{method:"insert",data:{...data,id:id(),created_at:nowISO()}});
+        const member=Array.isArray(created)?created[0]:created; const newId=member?.id;
+        if(!newId) throw new Error("Member was created but no member ID was returned.");
+        if(planId){const po=state.cache.plans.find(x=>x.id===planId);const days=Number(po?.duration_days||30);const start=document.getElementById("m_joining").value||todayISO();const end=new Date(start);end.setDate(end.getDate()+days);await db("memberships",{method:"insert",data:{id:id(),member_id:newId,plan_id:planId,start_date:start,end_date:end.toISOString().slice(0,10),agreed_fee:fee,trainer_id:trainerId,status:"active",created_at:nowISO()}})}
+        if(paid>0){await db("payments",{method:"insert",data:{id:id(),member_id:newId,amount:paid,payment_method:document.getElementById("m_method").value,paid_at:new Date(document.getElementById("m_payment_date").value).toISOString(),status:paid>=fee&&fee>0?"paid":"partial",notes:"Joining payment",created_at:nowISO()}})}
+        await logAction("member_created","Member, membership and joining payment created","member",newId);notify("Member + membership + payment created successfully.");
       }
       closeModal();await loadCache();renderView();
-    }catch(err){notify(err.message,true)}
+    }catch(err){notify(err.message||"Could not save member.",true)}finally{if(button)button.disabled=false}
   });
 
+  window.cancelMember=async memberId=>{
+    const m=state.cache.members.find(x=>x.id===memberId);if(!m)return;
+    if(!confirm(`Cancel/deactivate ${m.full_name}? Their history and payments will be preserved.`))return;
+    try{await db("members",{method:"update",eq:{id:memberId},data:{status:"inactive",updated_at:nowISO()}});const ms=state.cache.memberships.find(x=>x.member_id===memberId&&x.status!=="cancelled");if(ms){try{await db("memberships",{method:"update",eq:{id:ms.id},data:{status:"cancelled",updated_at:nowISO()}})}catch(_){}}await logAction("member_cancelled",`Member cancelled/deactivated: ${m.full_name}`,"member",memberId);await loadCache();renderView();notify("Member cancelled. History is preserved.")}catch(err){notify(err.message,true)}};
+  window.reactivateMember=async memberId=>{const m=state.cache.members.find(x=>x.id===memberId);if(!m)return;if(!confirm(`Reactivate ${m.full_name}?`))return;try{await db("members",{method:"update",eq:{id:memberId},data:{status:"active",updated_at:nowISO()}});await logAction("member_reactivated",`Member reactivated: ${m.full_name}`,"member",memberId);await loadCache();renderView();notify("Member reactivated.")}catch(err){notify(err.message,true)}};
+
   function paymentModal(){
-    const opts=state.cache.members.map(m=>`<option value="${esc(m.id)}">${esc(m.member_code)} — ${esc(m.full_name)}</option>`).join("");
-    showModal("Record payment",`<form id="paymentForm" class="form-grid">${`<div class="field"><label>Member</label><select id="p_member" required>${opts}</select></div>`}${field("p_amount","Amount","","number")}${field("p_method","Payment method","Cash")}${field("p_date","Date",todayISO(),"date")}<div class="field"><label>Status</label><select id="p_status"><option value="paid">Paid</option><option value="partial">Partial</option><option value="pending">Pending</option></select></div>${field("p_note","Notes","","text","span2")}<div class="span2"><button class="btn btn-primary">RECORD PAYMENT</button></div></form>`);
+    const opts=state.cache.members.filter(m=>m.status!=="inactive").map(m=>`<option value="${esc(m.id)}">${esc(m.member_code)} — ${esc(m.full_name)}</option>`).join("");
+    showModal("RECORD PAYMENT",`<form id="paymentForm" class="form-grid"><div class="field span2"><label>Member</label><select id="p_member" required>${opts}</select></div><div class="field span2"><label>Amount</label><input id="p_amount" class="amount-box" type="number" min="0" step="1" inputmode="numeric" value="800" required></div><div class="field span2"><label>Quick amount</label><div class="quick-amounts"><button type="button" onclick="setPaymentAmount(600)">₹600</button><button type="button" onclick="setPaymentAmount(700)">₹700</button><button type="button" onclick="setPaymentAmount(800)">₹800</button><button type="button" onclick="setPaymentAmount(900)">₹900</button><button type="button" onclick="setPaymentAmount(1000)">₹1,000</button></div></div>${field("p_method","Payment method","Cash")}${field("p_date","Date",todayISO(),"date")}<div class="field"><label>Status</label><select id="p_status"><option value="paid">Paid</option><option value="partial">Partial</option><option value="pending">Pending</option></select></div>${field("p_note","Notes","","text","span2")}<div class="span2"><button class="btn btn-primary">RECORD PAYMENT</button></div></form>`);
   }
   window.paymentModal=paymentModal;
+  window.setPaymentAmount=n=>{const e=document.getElementById("p_amount");if(e)e.value=String(n)};
   document.addEventListener("submit",async e=>{
     if(e.target.id!=="paymentForm")return;e.preventDefault();
-    try{await db("payments",{method:"insert",data:{id:id(),member_id:document.getElementById("p_member").value,amount:Number(document.getElementById("p_amount").value),payment_method:document.getElementById("p_method").value,paid_at:new Date(document.getElementById("p_date").value).toISOString(),status:document.getElementById("p_status").value,notes:document.getElementById("p_note").value,created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Payment recorded.");}catch(err){notify(err.message,true)}
+    try{const amount=Number(document.getElementById("p_amount").value||0);await db("payments",{method:"insert",data:{id:id(),member_id:document.getElementById("p_member").value,amount,payment_method:document.getElementById("p_method").value,paid_at:new Date(document.getElementById("p_date").value).toISOString(),status:document.getElementById("p_status").value,notes:document.getElementById("p_note").value,created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Payment recorded.");}catch(err){notify(err.message,true)}
   });
 
   function expenseModal(){showModal("Add expense",`<form id="expenseForm" class="form-grid">${field("e_category","Category","Maintenance")}${field("e_amount","Amount","","number")}${field("e_date","Date",todayISO(),"date")}${field("e_method","Payment method","Cash")}${field("e_desc","Description","","text","span2")}<div class="span2"><button class="btn btn-primary">SAVE EXPENSE</button></div></form>`)}
@@ -554,14 +604,12 @@
 
   window.viewMember=async memberId=>{
     const m=state.cache.members.find(x=>x.id===memberId);if(!m)return;
-    const att=state.cache.attendance.filter(a=>a.member_id===memberId), pays=state.cache.payments.filter(p=>p.member_id===memberId), works=state.cache.workouts.filter(w=>w.member_id===memberId);
+    const att=state.cache.attendance.filter(a=>a.member_id===memberId), pays=state.cache.payments.filter(p=>p.member_id===memberId), works=state.cache.workouts.filter(w=>w.member_id===memberId), ms=state.cache.memberships.filter(x=>x.member_id===memberId).sort((a,b)=>String(b.start_date).localeCompare(String(a.start_date)))[0], plan=state.cache.plans.find(p=>p.id===ms?.plan_id), trainer=state.cache.trainers.find(t=>t.id===m.trainer_id||t.id===ms?.trainer_id);
+    const totalPaid=pays.reduce((s,p)=>s+Number(p.amount||0),0), fee=Number(ms?.agreed_fee||plan?.price||0), due=Math.max(0,fee-totalPaid);
     showModal(`${esc(m.full_name)} <span class="mini">${esc(m.member_code||"")}</span>`,`
-      <div class="grid two">
-        <div class="card"><h3>Profile</h3><p><b>Phone:</b> ${esc(m.phone||"—")}</p><p><b>Email:</b> ${esc(m.email||"—")}</p><p><b>DOB:</b> ${dateOnly(m.date_of_birth)}</p><p><b>Gender:</b> ${esc(m.gender||"—")}</p><p><b>Joined:</b> ${dateOnly(m.joining_date)}</p><p><b>Address:</b> ${esc(m.address||"—")}</p><p><b>Emergency:</b> ${esc(m.emergency_contact||"—")} ${esc(m.emergency_phone||"")}</p></div>
-        <div class="card"><h3>Live totals</h3><p>Attendance: <b>${att.length}</b></p><p>Payments: <b>${money(pays.reduce((s,p)=>s+Number(p.amount||0),0))}</b></p><p>Workouts: <b>${works.length}</b></p><p>Status: <span class="badge ${m.status==="active"?"green":"red"}">${esc(m.status||"—")}</span></p></div>
-      </div>
-      <div class="card" style="margin-top:16px"><h3>Attendance</h3>${attendanceTable(att)}</div>
-      <div class="card" style="margin-top:16px"><h3>Payments</h3>${paymentTable(pays)}</div>`);
+      <div class="grid two"><div class="card"><div class="row"><div class="photo-preview" style="width:120px;height:120px">${m.photo_url?`<img src="${esc(m.photo_url)}" alt="">`:initials(m.full_name)}</div><div><h3>${esc(m.full_name)}</h3><div class="mini">${esc(m.member_code||"—")}</div><span class="badge ${m.status==="active"?"green":"red"}">${esc(m.status||"—")}</span></div></div><hr style="border-color:var(--line);border-width:1px 0 0;margin:18px 0"><p><b>Phone:</b> ${esc(m.phone||"—")}</p><p><b>Email:</b> ${esc(m.email||"—")}</p><p><b>DOB:</b> ${dateOnly(m.date_of_birth)}</p><p><b>Gender:</b> ${esc(m.gender||"—")}</p><p><b>Joined:</b> ${dateOnly(m.joining_date)}</p><p><b>Address:</b> ${esc(m.address||"—")}</p><p><b>Emergency:</b> ${esc(m.emergency_contact||"—")} ${esc(m.emergency_phone||"")}</p><p><b>Trainer:</b> ${esc(trainer?.full_name||"Not assigned")}</p></div>
+      <div class="card"><h3>Membership & fees</h3><p><b>Plan:</b> ${esc(plan?.name||"—")}</p><p><b>Period:</b> ${dateOnly(ms?.start_date)} → ${dateOnly(ms?.end_date)}</p><p><b>Total fee:</b> ${money(fee)}</p><p><b>Total paid:</b> ${money(totalPaid)}</p><p><b>Balance:</b> <b class="accent">${money(due)}</b></p><p><b>Payments:</b> ${pays.length}</p><div class="danger-actions"><button class="btn" onclick="closeModal();memberModal('${m.id}')">EDIT MEMBER</button>${m.status==="active"?`<button class="btn btn-danger" onclick="closeModal();cancelMember('${m.id}')">CANCEL MEMBERSHIP</button>`:`<button class="btn btn-success" onclick="closeModal();reactivateMember('${m.id}')">REACTIVATE</button>`}</div></div></div>
+      <div class="card" style="margin-top:16px"><h3>Attendance</h3>${attendanceTable(att)}</div><div class="card" style="margin-top:16px"><h3>Payments</h3>${paymentTable(pays)}</div><div class="card" style="margin-top:16px"><h3>Workout history</h3>${works.length?`<div class="table-wrap"><table><thead><tr><th>Date</th><th>Workout</th><th>Duration</th><th>Notes</th></tr></thead><tbody>${works.map(w=>`<tr><td>${dateOnly(w.session_date)}</td><td>${esc(w.title||"Workout")}</td><td>${Number(w.duration_minutes||0)} min</td><td>${esc(w.notes||"—")}</td></tr>`).join("")}</tbody></table></div>`:empty("No workouts yet.","Workout history will appear here.")}</div>`);
   };
 
   window.attendanceFilter=(kind)=>{const l=kind==="today"?state.cache.attendance.filter(a=>String(a.check_in_at||"").slice(0,10)===todayISO()):state.cache.attendance;const el=document.getElementById("attendanceTable");if(el)el.innerHTML=attendanceTable(l)};
