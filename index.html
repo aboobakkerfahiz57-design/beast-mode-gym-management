@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -125,8 +125,24 @@
   }
 
   function initSupabase(){
+    // Attendance QR scans happen on a member's phone, where this site's
+    // localStorage configuration does not exist yet. The permanent QR therefore
+    // carries the browser-safe Supabase project URL + publishable key in the
+    // URL. The publishable key is specifically intended for browser use.
+    try{
+      const params=new URLSearchParams(location.search);
+      const qrUrl=params.get("bm_url");
+      const qrKey=params.get("bm_key");
+      if(qrUrl && qrKey){
+        state.config={url:qrUrl,key:qrKey};
+        localStorage.setItem(STORAGE,JSON.stringify(state.config));
+      }
+    }catch(_){}
+
     if(!state.config.url || !state.config.key || !window.supabase){ state.supabase=null; return; }
-    try { state.supabase=window.supabase.createClient(state.config.url,state.config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}); }
+    try {
+      state.supabase=window.supabase.createClient(state.config.url,state.config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+    }
     catch(e){ state.supabase=null; notify("Supabase configuration is invalid.",true); }
   }
 
@@ -397,7 +413,7 @@
     const v=document.getElementById("view"); if(!v)return;
     const map={dashboard:dashboardView,members:membersView,attendance:attendanceView,payments:paymentsView,expenses:expensesView,plans:plansView,trainers:trainersView,workouts:workoutsView,reports:reportsView,activity:activityView,settings:settingsView};
     v.innerHTML=(map[state.route]||dashboardView)();
-    if(state.route==="settings") drawQR();
+    if(state.route==="settings") setTimeout(()=>drawQR(false),0);
   }
 
   async function render(){
@@ -652,12 +668,55 @@
 
   window.attendanceFilter=(kind)=>{const l=kind==="today"?state.cache.attendance.filter(a=>String(a.check_in_at||"").slice(0,10)===todayISO()):state.cache.attendance;const el=document.getElementById("attendanceTable");if(el)el.innerHTML=attendanceTable(l)};
   window.downloadQR=async()=>{await drawQR(true)};
+
+  function attendanceQRTarget(){
+    const base=location.href.split("#")[0].split("?")[0];
+    const params=new URLSearchParams();
+    // Pass the browser-safe publishable key so a first-time member phone can
+    // connect to Supabase without staff configuration. Never use a secret key.
+    if(state.config.url) params.set("bm_url",state.config.url);
+    if(state.config.key) params.set("bm_key",state.config.key);
+    return base+(params.toString()?"?"+params.toString():"")+"#checkin";
+  }
+
   async function drawQR(download=false){
-    const canvas=document.getElementById("qrCanvas");if(!canvas||!window.QRCode)return;
-    const base=location.href.split("#")[0];const target=base+"#checkin";
-    document.getElementById("qrText").textContent=target;
-    await QRCode.toCanvas(canvas,target,{width:220,margin:2,errorCorrectionLevel:"M"});
-    if(download){const a=document.createElement("a");a.download="beast-mode-gym-check-in-qr.png";a.href=canvas.toDataURL("image/png");a.click()}
+    const box=document.getElementById("qrCanvas");
+    const text=document.getElementById("qrText");
+    if(!box) return;
+    const target=attendanceQRTarget();
+    if(text) text.textContent=target;
+
+    // Use an <img> generated from a data URL. This is more reliable than a
+    // canvas-only render on GitHub Pages and also gives us a real image to
+    // download.
+    if(!window.QRCode || typeof window.QRCode.toDataURL!=="function") {
+      box.outerHTML='<div id="qrCanvas" class="danger-note" style="width:220px;text-align:center">QR generator could not load. Refresh the page and try again.</div>';
+      return;
+    }
+
+    try{
+      const dataUrl=await QRCode.toDataURL(target,{width:260,margin:2,errorCorrectionLevel:"M",color:{dark:"#000000",light:"#ffffff"}});
+      const img=document.createElement("img");
+      img.id="qrCanvas";
+      img.alt="Beast Mode Gym Attendance QR";
+      img.width=260;
+      img.height=260;
+      img.style.display="block";
+      img.src=dataUrl;
+      box.replaceWith(img);
+
+      if(download){
+        const a=document.createElement("a");
+        a.download="beast-mode-gym-attendance-qr.png";
+        a.href=dataUrl;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+    }catch(err){
+      box.outerHTML='<div id="qrCanvas" class="danger-note" style="width:260px;text-align:center">Could not generate the attendance QR. Please refresh and try again.</div>';
+      notify(err.message||"Could not generate QR.",true);
+    }
   }
 
   window.addEventListener("hashchange",()=>{state.route=location.hash.replace(/^#/,"")||"dashboard"; if(state.route==="checkin"){renderCheckin()}else render()});
