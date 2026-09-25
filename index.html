@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -429,9 +429,23 @@
 
   async function boot(){
     initSupabase();
+
+    // The permanent gym QR opens this file with #checkin.
+    // A member must see the public attendance screen, not the staff login.
+    const initialRoute=location.hash.replace(/^#/,"")||"dashboard";
+    if(initialRoute==="checkin"){
+      state.route="checkin";
+      await renderCheckin();
+      return;
+    }
+
     if(state.supabase){
       const {data}=await state.supabase.auth.getSession(); state.session=data.session;
-      state.supabase.auth.onAuthStateChange(async (_e,s)=>{state.session=s; if(s){try{await loadProfile();await loadCache()}catch(e){console.error(e)}} render()});
+      state.supabase.auth.onAuthStateChange(async (_e,s)=>{
+        state.session=s;
+        if(s){try{await loadProfile();await loadCache()}catch(e){console.error(e)}}
+        render();
+      });
       if(state.session){try{await loadProfile();await loadCache()}catch(e){notify(e.message,true)}}
     }
     render();
@@ -476,7 +490,7 @@
       <div class="hero"><div class="eyebrow">Gym attendance</div><h1 style="font-size:42px">CHECK IN / OUT.</h1><p class="muted">Use your Member ID and date of birth. The server records the exact time automatically.</p></div>
       <form id="checkinForm" class="grid">
         <div class="field"><label>Member ID</label><input id="ciCode" required placeholder="BM1001" autocapitalize="characters" autocomplete="off"></div>
-        <div class="field"><label>Date of birth</label><input id="ciSecret" required type="text" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="bday" maxlength="10" pattern="\d{2}-\d{2}-\d{4}"></div>
+        <div class="field"><label>Date of birth</label><input id="ciSecret" required type="text" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="bday" maxlength="10" pattern="\d{2}-\d{2}-\d{4}"><div class="mini">Enter 18022007 — it automatically becomes 18-02-2007.</div></div>
         <div class="row" style="gap:10px">
           <button class="btn btn-primary" type="submit" name="attendanceAction" value="check_in" style="flex:1">CHECK IN</button>
           <button class="btn btn-danger" type="button" onclick="submitCheckoutFromQR()" style="flex:1">CHECK OUT</button>
@@ -490,6 +504,9 @@
       </div>
       <div class="row space" style="margin-top:18px"><button class="btn" onclick="location.hash='login';state.route='login';render()">STAFF / MEMBER LOGIN</button><span class="mini">Attendance is recorded in the gym database.</span></div>
     </div></div>`;
+
+    // Auto-format 18022007 → 18-02-2007.
+    attachDobFormatter();
   }
 
   function normalizeDobInput(value){
@@ -529,18 +546,20 @@
   async function attendanceRpc(functionName, code, displayDob){
     const candidates=dobCandidates(displayDob);
     if(!candidates.length) throw new Error("Invalid date of birth. Enter it as DD-MM-YYYY.");
+
     let lastError=null;
+
+    // Support DD-MM-YYYY, YYYY-MM-DD, and raw 8-digit DOB representations.
     for(const credential of candidates){
-      const {data,error}=await state.supabase.rpc(functionName,{p_member_code:code,p_credential:credential});
+      const {data,error}=await state.supabase.rpc(functionName,{
+        p_member_code:String(code||"").trim().toUpperCase(),
+        p_credential:credential
+      });
       if(!error) return data;
       lastError=error;
-      const msg=String(error.message||"").toLowerCase();
-      // If the RPC says the DOB is invalid, try the next supported date format.
-      // Other errors (duplicate active check-in, unknown member, etc.) are real
-      // business errors and must be returned immediately.
-      if(!msg.includes("invalid date of birth")) throw error;
     }
-    throw lastError || new Error("Invalid date of birth.");
+
+    throw lastError || new Error("Check-in/out failed. Please verify Member ID and date of birth.");
   }
 
   async function qrCredentials(){
