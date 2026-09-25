@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -114,6 +114,15 @@
   const id = () => crypto.randomUUID ? crypto.randomUUID() : Date.now()+"-"+Math.random();
   const initials = n => (String(n||"BM").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("")||"BM").toUpperCase();
 
+  // Public QR attendance DOB formatter: 18022007 -> 18-02-2007.
+  function formatDOB(input){
+    if(!input) return;
+    const digits=String(input.value||"").replace(/\D/g,"").slice(0,8);
+    if(digits.length<=2) input.value=digits;
+    else if(digits.length<=4) input.value=digits.slice(0,2)+"-"+digits.slice(2);
+    else input.value=digits.slice(0,2)+"-"+digits.slice(2,4)+"-"+digits.slice(4);
+  }
+
   function notify(msg, error=false){
     toast.textContent=msg; toast.classList.remove("hidden","error"); if(error) toast.classList.add("error");
     clearTimeout(notify.t); notify.t=setTimeout(()=>toast.classList.add("hidden"),3600);
@@ -135,6 +144,7 @@
       if(qrUrl && qrKey){
         state.config={url:qrUrl,key:qrKey};
         localStorage.setItem(STORAGE,JSON.stringify(state.config));
+        if(params.get("bm_attendance")==="1") state.route="checkin";
       }
     }catch(_){}
 
@@ -416,7 +426,18 @@
   }
 
   async function render(){
-    if(location.hash.replace(/^#/,"") && location.hash.replace(/^#/,"")!==state.route) state.route=location.hash.replace(/^#/,"");
+    const hashRoute=location.hash.replace(/^#/ ,"");
+    const params=new URLSearchParams(location.search);
+    if(hashRoute) state.route=hashRoute;
+    // QR attendance is a PUBLIC route. It must be rendered before the
+    // authenticated staff/member shell, otherwise a phone scanning the QR
+    // is incorrectly sent to the owner email/password screen.
+    const publicAttendance = state.route==="checkin" || params.get("bm_attendance")==="1";
+    if(publicAttendance){
+      state.route="checkin";
+      await renderCheckin();
+      return;
+    }
     if(!state.session){
       app.innerHTML=state.route==="setup"?setupView():loginView();
       return;
@@ -476,7 +497,7 @@
       <div class="hero"><div class="eyebrow">Gym attendance</div><h1 style="font-size:42px">CHECK IN / OUT.</h1><p class="muted">Use your Member ID and date of birth. The server records the exact time automatically.</p></div>
       <form id="checkinForm" class="grid">
         <div class="field"><label>Member ID</label><input id="ciCode" required placeholder="BM1001" autocapitalize="characters" autocomplete="off"></div>
-        <div class="field"><label>Date of birth</label><input id="ciSecret" required type="text" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="bday" maxlength="10"></div>
+        <div class="field"><label>Date of birth</label><input id="ciSecret" required type="text" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="bday" maxlength="10" oninput="formatDOB(this)"></div>
         <div class="row" style="gap:10px">
           <button class="btn btn-primary" type="submit" name="attendanceAction" value="check_in" style="flex:1">CHECK IN</button>
           <button class="btn btn-danger" type="button" onclick="submitCheckoutFromQR()" style="flex:1">CHECK OUT</button>
@@ -494,7 +515,8 @@
 
   async function qrCredentials(){
     const code=document.getElementById("ciCode")?.value.trim().toUpperCase();
-    const secret=document.getElementById("ciSecret")?.value.trim();
+    const secretDisplay=document.getElementById("ciSecret")?.value.trim();
+    const secret=secretDisplay.replace(/\D/g,"");
     const out=document.getElementById("ciResult");
     if(!code || !secret){
       if(out) out.innerHTML=`<div class="danger-note">Enter your Member ID and date of birth first.</div>`;
@@ -671,11 +693,12 @@
   function attendanceQRTarget(){
     const base=location.href.split("#")[0].split("?")[0];
     const params=new URLSearchParams();
-    // Pass the browser-safe publishable key so a first-time member phone can
-    // connect to Supabase without staff configuration. Never use a secret key.
+    params.set("bm_attendance","1");
+    // The publishable key is browser-safe and is required so a member phone
+    // can connect without having previously configured this device.
     if(state.config.url) params.set("bm_url",state.config.url);
     if(state.config.key) params.set("bm_key",state.config.key);
-    return base+(params.toString()?"?"+params.toString():"")+"#checkin";
+    return base+"?"+params.toString();
   }
 
   async function drawQR(download=false){
@@ -736,6 +759,8 @@
   }
 
   window.addEventListener("hashchange",()=>{state.route=location.hash.replace(/^#/,"")||"dashboard"; if(state.route==="checkin"){renderCheckin()}else render()});
+  // If the QR URL is opened without a hash, query routing still opens public attendance.
+  if(new URLSearchParams(location.search).get("bm_attendance")==="1") state.route="checkin";
 
   boot();
 })();
