@@ -416,14 +416,24 @@
   }
 
   async function render(){
-    if(location.hash.replace(/^#/,"") && location.hash.replace(/^#/,"")!==state.route) state.route=location.hash.replace(/^#/,"");
-    if(!state.session){
-      app.innerHTML=state.route==="setup"?setupView():loginView();
-      return;
-    }
-    app.innerHTML=shell(); renderView();
+  if(location.hash.replace(/^#/,"") &&
+     location.hash.replace(/^#/,"")!==state.route){
+    state.route=location.hash.replace(/^#/,"");
   }
 
+  if(state.route==="checkin"){
+    renderCheckin();
+    return;
+  }
+
+  if(!state.session){
+    app.innerHTML=state.route==="setup"?setupView():loginView();
+    return;
+  }
+
+  app.innerHTML=shell();
+  renderView();
+}
   function go(r){state.route=r;location.hash=r;render();}
   window.go=go;
 
