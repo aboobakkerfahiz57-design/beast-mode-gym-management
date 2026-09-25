@@ -1,2782 +1,560 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Beast Mode Fitness Studio</title>
-
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-
-:root{
-    --red:#e32732;
-    --red2:#ff3541;
-    --black:#050505;
-    --panel:#101010;
-    --line:#292929;
-    --text:#fff;
-    --muted:#999;
-    --green:#20c878;
-}
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html,body{
-    width:100%;
-    min-height:100%;
-}
-
-body{
-    font-family:Inter,Arial,sans-serif;
-    background:var(--black);
-    color:var(--text);
-}
-
-/* =========================================
-   HOMEPAGE
-========================================= */
-
-.home{
-    position:relative;
-    min-height:100vh;
-    height:100vh;
-    overflow:hidden;
-
-    display:flex;
-    flex-direction:column;
-
-    background-image:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.88),
-            rgba(0,0,0,.52) 45%,
-            rgba(0,0,0,.18)
-        ),
-        linear-gradient(
-            0deg,
-            rgba(0,0,0,.72),
-            transparent 60%
-        ),
-        url("beast-mode-home-bg.png");
-
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-}
-
-.topbar{
-    height:90px;
-    flex-shrink:0;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 5%;
-
-    border-bottom:1px solid rgba(255,255,255,.08);
-
-    background:linear-gradient(
-        to bottom,
-        rgba(0,0,0,.55),
-        transparent
-    );
-}
-
-.logo{
-    width:125px;
-    height:auto;
-}
-
-.status{
-    display:flex;
-    align-items:center;
-    gap:9px;
-
-    color:#bbb;
-
-    font-size:10px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
-
-.status-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-
-    background:var(--red);
-
-    box-shadow:0 0 12px rgba(227,39,50,.9);
-}
-
-.hero{
-    flex:1;
-
-    display:flex;
-    align-items:center;
-
-    padding:40px 5%;
-}
-
-.hero-content{
-    max-width:650px;
-}
-
-.eyebrow{
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    color:var(--red);
-
-    font-size:10px;
-    font-weight:800;
-
-    letter-spacing:4px;
-    text-transform:uppercase;
-
-    margin-bottom:22px;
-}
-
-.eyebrow::before{
-    content:"";
-
-    width:34px;
-    height:1px;
-
-    background:var(--red);
-}
-
-.hero h1{
-    font-family:"Space Grotesk",sans-serif;
-
-    font-size:clamp(55px,8vw,105px);
-
-    line-height:.87;
-    font-weight:700;
-
-    letter-spacing:-6px;
-    text-transform:uppercase;
-
-    margin-bottom:28px;
-}
-
-.hero h1 span{
-    color:var(--red);
-}
-
-.hero-description{
-    max-width:490px;
-
-    color:rgba(255,255,255,.7);
-
-    font-size:14px;
-    line-height:1.7;
-
-    margin-bottom:32px;
-}
-
-.enter-btn{
-    display:inline-flex;
-    align-items:center;
-    gap:18px;
-
-    border:1px solid var(--red);
-
-    background:var(--red);
-    color:#fff;
-
-    padding:15px 23px;
-
-    text-decoration:none;
-
-    font-size:11px;
-    font-weight:800;
-
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-
-    cursor:pointer;
-
-    transition:.25s;
-}
-
-.enter-btn:hover{
-    background:var(--red2);
-
-    transform:translateY(-3px);
-
-    box-shadow:0 15px 35px rgba(227,39,50,.25);
-}
-
-.enter-btn span{
-    font-size:18px;
-}
-
-.bottom{
-    position:absolute;
-
-    left:5%;
-    right:5%;
-    bottom:25px;
-
-    display:flex;
-    justify-content:space-between;
-
-    color:rgba(255,255,255,.45);
-
-    font-size:9px;
-
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-}
-
-.bottom strong{
-    color:#fff;
-}
-
-
-/* =========================================
-   LOGIN
-========================================= */
-
-#loginScreen{
-    display:none;
-
-    min-height:100vh;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:25px;
-
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(227,39,50,.12),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(227,39,50,.07),
-            transparent 30%
-        ),
-        #050505;
-}
-
-.login-wrap{
-    width:min(1050px,100%);
-
-    min-height:620px;
-
-    display:grid;
-
-    grid-template-columns:1.1fr .9fr;
-
-    overflow:hidden;
-
-    border:1px solid #292929;
-    border-radius:24px;
-
-    background:#0b0b0b;
-
-    box-shadow:
-        0 30px 100px rgba(0,0,0,.65);
-}
-
-.login-brand{
-    position:relative;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-
-    padding:50px;
-
-    overflow:hidden;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(227,39,50,.13),
-            transparent 50%
-        ),
-        #0f0f0f;
-}
-
-.login-brand::after{
-    content:"BEAST";
-
-    position:absolute;
-
-    right:-80px;
-    bottom:20px;
-
-    font-family:"Space Grotesk";
-
-    font-size:150px;
-    font-weight:800;
-
-    color:rgba(255,255,255,.025);
-
-    transform:rotate(-8deg);
-}
-
-.login-logo{
-    position:relative;
-    z-index:2;
-
-    width:120px;
-}
-
-.login-main{
-    position:relative;
-    z-index:2;
-}
-
-.login-main h1{
-    font-family:"Space Grotesk";
-
-    font-size:clamp(45px,6vw,78px);
-
-    line-height:.9;
-
-    letter-spacing:-5px;
-
-    margin-bottom:25px;
-}
-
-.login-main h1 span{
-    color:var(--red);
-}
-
-.login-main p{
-    max-width:430px;
-
-    color:#888;
-
-    font-size:13px;
-    line-height:1.7;
-}
-
-.login-footer{
-    position:relative;
-    z-index:2;
-
-    color:#555;
-
-    font-size:9px;
-
-    letter-spacing:2px;
-    text-transform:uppercase;
-}
-
-.login-panel{
-    padding:50px 42px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-
-    background:#090909;
-
-    border-left:1px solid var(--line);
-}
-
-.login-panel h2{
-    font-family:"Space Grotesk";
-
-    font-size:32px;
-
-    margin-bottom:7px;
-}
-
-.login-panel > p{
-    color:#777;
-
-    font-size:13px;
-
-    margin-bottom:28px;
-}
-
-.role-tabs{
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:7px;
-
-    margin-bottom:22px;
-}
-
-.role-tab{
-    border:1px solid var(--line);
-
-    background:#111;
-    color:#777;
-
-    padding:11px 5px;
-
-    border-radius:9px;
-
-    font-size:11px;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.role-tab:hover{
-    color:#fff;
-}
-
-.role-tab.active{
-    background:var(--red);
-
-    border-color:var(--red);
-
-    color:#fff;
-
-    font-weight:800;
-}
-
-.field{
-    margin-bottom:15px;
-}
-
-.field label{
-    display:block;
-
-    color:#aaa;
-
-    font-size:10px;
-    font-weight:700;
-
-    letter-spacing:1px;
-
-    margin-bottom:7px;
-}
-
-.field input{
-    width:100%;
-
-    border:1px solid var(--line);
-
-    background:#121212;
-    color:#fff;
-
-    padding:14px;
-
-    border-radius:9px;
-
-    outline:none;
-
-    font-size:13px;
-
-    transition:.2s;
-}
-
-.field input:focus{
-    border-color:var(--red);
-
-    box-shadow:0 0 0 2px rgba(227,39,50,.08);
-}
-
-.login-btn{
-    width:100%;
-
-    border:0;
-
-    background:var(--red);
-    color:#fff;
-
-    padding:15px;
-
-    border-radius:9px;
-
-    font-weight:800;
-
-    font-size:12px;
-
-    letter-spacing:1px;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.login-btn:hover{
-    background:var(--red2);
-
-    transform:translateY(-1px);
-}
-
-.login-error{
-    display:none;
-
-    margin-top:12px;
-
-    padding:11px;
-
-    border:1px solid rgba(227,39,50,.35);
-
-    border-radius:8px;
-
-    background:rgba(227,39,50,.08);
-
-    color:#ff6d75;
-
-    font-size:11px;
-
-    text-align:center;
-}
-
-.demo{
-    margin-top:18px;
-
-    padding:12px;
-
-    border:1px dashed #292929;
-
-    border-radius:9px;
-
-    color:#666;
-
-    font-size:10px;
-
-    line-height:1.7;
-}
-
-.demo strong{
-    color:#aaa;
-}
-
-.back-btn{
-    border:0;
-
-    background:transparent;
-    color:#666;
-
-    margin-top:18px;
-
-    font-size:10px;
-
-    cursor:pointer;
-}
-
-.back-btn:hover{
-    color:#fff;
-}
-
-
-/* =========================================
-   DASHBOARD
-========================================= */
-
-#dashboardScreen{
-    display:none;
-
-    min-height:100vh;
-
-    padding:30px;
-
-    background:#070707;
-}
-
-.dashboard{
-    max-width:1200px;
-
-    margin:auto;
-}
-
-.dashboard-header{
-    display:flex;
-
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:25px;
-}
-
-.dashboard-header h1{
-    font-family:"Space Grotesk";
-
-    font-size:32px;
-}
-
-.role-label{
-    color:var(--red);
-
-    font-size:10px;
-
-    letter-spacing:2px;
-
-    text-transform:uppercase;
-
-    margin-bottom:4px;
-}
-
-.logout{
-    border:1px solid #333;
-
-    background:#111;
-    color:#aaa;
-
-    padding:10px 15px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-}
-
-.logout:hover{
-    color:#fff;
-
-    border-color:#555;
-}
-
-
-/* =========================================
-   STATISTICS
-========================================= */
-
-.dashboard-card{
-    display:grid;
-
-    grid-template-columns:repeat(5,1fr);
-
-    gap:15px;
-
-    margin-bottom:30px;
-}
-
-.d-card{
-    padding:22px;
-
-    border:1px solid #252525;
-
-    border-radius:15px;
-
-    background:#101010;
-}
-
-.d-card small{
-    color:#666;
-
-    font-size:10px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-}
-
-.d-card strong{
-    display:block;
-
-    font-family:"Space Grotesk";
-
-    font-size:30px;
-
-    margin-top:12px;
-}
-
-
-/* =========================================
-   OWNER MEMBER MANAGEMENT
-========================================= */
-
-.management{
-    margin-top:25px;
-}
-
-.section-header{
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:15px;
-}
-
-.section-header h2{
-    font-family:"Space Grotesk";
-
-    font-size:23px;
-}
-
-.add-btn{
-    border:1px solid var(--red);
-
-    background:var(--red);
-
-    color:#fff;
-
-    padding:11px 16px;
-
-    border-radius:8px;
-
-    font-size:11px;
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.add-btn:hover{
-    background:var(--red2);
-}
-
-
-/* =========================================
-   ADD MEMBER PANEL
-========================================= */
-
-.add-member-panel{
-    display:none;
-
-    margin-bottom:20px;
-
-    padding:22px;
-
-    border:1px solid #292929;
-
-    border-radius:15px;
-
-    background:#101010;
-}
-
-.add-member-panel h3{
-    font-family:"Space Grotesk";
-
-    margin-bottom:18px;
-}
-
-.member-form{
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:14px;
-}
-
-.member-form .full{
-    grid-column:1/-1;
-}
-
-.member-form input,
-.member-form select{
-    width:100%;
-
-    padding:13px;
-
-    border:1px solid #292929;
-
-    border-radius:8px;
-
-    background:#151515;
-
-    color:#fff;
-
-    outline:none;
-}
-
-.member-form input:focus,
-.member-form select:focus{
-    border-color:var(--red);
-}
-
-.form-label{
-    display:block;
-
-    color:#777;
-
-    font-size:9px;
-
-    letter-spacing:1px;
-
-    margin-bottom:6px;
-
-    text-transform:uppercase;
-}
-
-.form-actions{
-    grid-column:1/-1;
-
-    display:flex;
-
-    gap:10px;
-
-    margin-top:5px;
-}
-
-.save-btn{
-    border:0;
-
-    background:var(--red);
-
-    color:#fff;
-
-    padding:12px 20px;
-
-    border-radius:8px;
-
-    font-weight:800;
-
-    cursor:pointer;
-}
-
-.cancel-btn{
-    border:1px solid #333;
-
-    background:#111;
-
-    color:#aaa;
-
-    padding:12px 20px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-}
-
-
-/* =========================================
-   SEARCH
-========================================= */
-
-.search-box{
-    width:100%;
-
-    margin-bottom:15px;
-
-    padding:14px 16px;
-
-    border:1px solid #292929;
-
-    border-radius:10px;
-
-    background:#101010;
-
-    color:#fff;
-
-    outline:none;
-
-    font-size:13px;
-}
-
-.search-box:focus{
-    border-color:var(--red);
-}
-
-
-/* =========================================
-   MEMBER TABLE
-========================================= */
-
-.table-wrap{
-    overflow-x:auto;
-
-    border:1px solid #252525;
-
-    border-radius:15px;
-
-    background:#101010;
-}
-
-.member-table{
-    width:100%;
-
-    border-collapse:collapse;
-
-    min-width:750px;
-}
-
-.member-table th{
-    padding:15px;
-
-    text-align:left;
-
-    color:#666;
-
-    font-size:9px;
-
-    letter-spacing:1px;
-
-    text-transform:uppercase;
-
-    border-bottom:1px solid #252525;
-}
-
-.member-table td{
-    padding:15px;
-
-    color:#ccc;
-
-    font-size:12px;
-
-    border-bottom:1px solid #1d1d1d;
-}
-
-.member-table tr:last-child td{
-    border-bottom:0;
-}
-
-.member-table tr:hover td{
-    background:#141414;
-}
-
-.member-id{
-    color:var(--red);
-
-    font-weight:800;
-}
-
-.status-active{
-    display:inline-block;
-
-    padding:5px 8px;
-
-    border-radius:20px;
-
-    background:rgba(32,200,120,.1);
-
-    color:var(--green);
-
-    font-size:9px;
-
-    font-weight:700;
-
-    text-transform:uppercase;
-}
-
-.delete-btn{
-    border:1px solid #402020;
-
-    background:#1a0c0c;
-
-    color:#ff656d;
-
-    padding:7px 10px;
-
-    border-radius:6px;
-
-    font-size:10px;
-
-    cursor:pointer;
-}
-
-.delete-btn:hover{
-    background:#2a1010;
-}
-
-.empty-state{
-    padding:35px;
-
-    text-align:center;
-
-    color:#666;
-
-    font-size:12px;
-}
-
-
-/* =========================================
-   TRAINER / MEMBER INFO
-========================================= */
-
-.simple-panel{
-    margin-top:25px;
-
-    padding:25px;
-
-    border:1px solid #252525;
-
-    border-radius:15px;
-
-    background:#101010;
-}
-
-.simple-panel h2{
-    font-family:"Space Grotesk";
-
-    margin-bottom:10px;
-}
-
-.simple-panel p{
-    color:#777;
-
-    font-size:13px;
-
-    line-height:1.7;
-}
-
-.profile-grid{
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:15px;
-
-    margin-top:20px;
-}
-
-.profile-item{
-    padding:18px;
-
-    border:1px solid #252525;
-
-    border-radius:10px;
-
-    background:#0c0c0c;
-}
-
-.profile-item small{
-    display:block;
-
-    color:#666;
-
-    font-size:9px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-
-    margin-bottom:7px;
-}
-
-.profile-item strong{
-    font-size:14px;
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media(max-width:1000px){
-
-    .dashboard-card{
-        grid-template-columns:repeat(2,1fr);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0b">
+  <title>BEAST MODE FITNESS STUDIO — Management System</title>
+
+  <!--
+    BEAST MODE FITNESS STUDIO
+    Single-file application.
+
+    IMPORTANT:
+    This file is designed to work with Supabase when the public project URL and
+    anon/publishable key are configured in Settings. Never put a Supabase
+    service-role key in this file.
+
+    Expected Supabase tables:
+      profiles, members, trainers, membership_plans, memberships, payments,
+      expenses, attendance, workout_sessions, workout_exercises,
+      studio_settings, activity_logs
+
+    For a genuinely multi-user production deployment, the corresponding
+    PostgreSQL schema + RLS + secure server-side member provisioning must exist.
+    The UI intentionally refuses to pretend that an unconfigured backend is
+    production-ready.
+  -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#08090b;--panel:#111317;--panel2:#17191e;--line:#292d35;
+      --text:#f5f5f5;--muted:#9ca3af;--red:#e11d2e;--red2:#ff3347;
+      --green:#22c55e;--amber:#f59e0b;--blue:#3b82f6;--danger:#ef4444;
+      --shadow:0 18px 50px rgba(0,0,0,.34);--radius:18px
     }
-
-}
-
-@media(max-width:800px){
-
-    .login-wrap{
-        grid-template-columns:1fr;
-    }
-
-    .login-brand{
-        min-height:300px;
-    }
-
-    .login-panel{
-        border-left:0;
-
-        border-top:1px solid var(--line);
-    }
-
-    .dashboard-card{
-        grid-template-columns:1fr;
-    }
-
-    .member-form{
-        grid-template-columns:1fr;
-    }
-
-    .member-form .full{
-        grid-column:auto;
-    }
-
-    .form-actions{
-        grid-column:auto;
-    }
-
-    .profile-grid{
-        grid-template-columns:1fr;
-    }
-
-}
-
-@media(max-width:600px){
-
-    #dashboardScreen{
-        padding:20px;
-    }
-
-    .topbar{
-        height:75px;
-
-        padding:0 22px;
-    }
-
-    .logo{
-        width:95px;
-    }
-
-    .status{
-        font-size:8px;
-    }
-
-    .hero{
-        padding:30px 22px;
-    }
-
-    .hero h1{
-        font-size:53px;
-
-        letter-spacing:-4px;
-    }
-
-    .hero-description{
-        font-size:12px;
-    }
-
-    .bottom{
-        left:22px;
-        right:22px;
-    }
-
-    .login-brand{
-        padding:30px;
-
-        min-height:260px;
-    }
-
-    .login-panel{
-        padding:30px;
-    }
-
-    .login-main h1{
-        font-size:48px;
-    }
-
-    .dashboard-header{
-        align-items:flex-start;
-    }
-
-    .dashboard-header h1{
-        font-size:25px;
-    }
-
-    .section-header{
-        align-items:flex-start;
-
-        flex-direction:column;
-    }
-
-    .add-btn{
-        width:100%;
-    }
-
-}
-
-</style>
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .hidden{display:none!important}
+    .app{min-height:100vh}
+    .auth-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:
+      radial-gradient(circle at 15% 15%,rgba(225,29,46,.15),transparent 35%),
+      radial-gradient(circle at 85% 80%,rgba(225,29,46,.10),transparent 30%),#08090b}
+    .auth-card{width:min(460px,100%);background:rgba(17,19,23,.96);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:32px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .brand-mark{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--red);font-weight:900}
+    .brand-title{font-weight:950;letter-spacing:.06em}.brand-sub{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+    .hero{margin:30px 0}.eyebrow{color:var(--red2);font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+    h1{font-size:clamp(32px,6vw,58px);line-height:.98;margin:10px 0 16px;letter-spacing:-.04em}
+    h2{margin:0;font-size:24px} h3{margin:0 0 10px}.muted{color:var(--muted)}
+    .layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+    .sidebar{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);background:#0b0c0f;padding:20px 14px;display:flex;flex-direction:column;z-index:20}
+    .nav{display:grid;gap:6px;margin-top:24px;overflow:auto}.nav button{background:none;border:0;color:#aeb4bf;text-align:left;padding:12px 14px;border-radius:12px}
+    .nav button:hover,.nav button.active{background:#191b20;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--red)}
+    .sidebar-bottom{margin-top:auto}.main{min-width:0}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(8,9,11,.86);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}
+    .content{padding:26px;max-width:1500px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:22px}
+    .grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(5,minmax(0,1fr));}.two{grid-template-columns:repeat(2,minmax(0,1fr));}.three{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .card{background:linear-gradient(180deg,#13151a,#101216);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.16)}
+    .stat .label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.1em}.stat .value{font-size:32px;font-weight:900;margin-top:8px}.stat .accent{color:var(--red2)}
+    .btn{border:1px solid var(--line);background:#181b20;color:#fff;border-radius:11px;padding:10px 14px;font-weight:800}.btn:hover{border-color:#464c58}.btn-primary{background:var(--red);border-color:var(--red)}.btn-primary:hover{background:var(--red2)}
+    .btn-danger{background:#2a1215;border-color:#6e1c25;color:#ff9aa4}.btn-ghost{background:transparent}.btn-success{background:#10251a;border-color:#1e6d3c;color:#8bf0ad}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.space{justify-content:space-between}
+    .field{display:grid;gap:7px}.field label{font-size:12px;color:#b8bec9;font-weight:800}.field input,.field select,.field textarea{width:100%;background:#0c0e11;border:1px solid #2b3038;color:#fff;border-radius:10px;padding:11px 12px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red)}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.span2{grid-column:1/-1}
+    table{width:100%;border-collapse:collapse}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.table-wrap table{min-width:760px}.table-wrap th,.table-wrap td{padding:13px 14px;border-bottom:1px solid #242830;text-align:left;white-space:nowrap}.table-wrap th{color:#9ca3af;font-size:11px;text-transform:uppercase;letter-spacing:.1em;background:#0d0f12}.table-wrap tr:last-child td{border-bottom:0}
+    .badge{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;background:#252932;color:#dbe0e8}.badge.green{background:#10261a;color:#8bf0ad}.badge.red{background:#301216;color:#ff9aa4}.badge.amber{background:#2d210e;color:#f8c96d}
+    .empty{text-align:center;padding:42px 20px;color:var(--muted)}.empty strong{display:block;color:#fff;margin-bottom:6px}
+    .toast{position:fixed;right:20px;bottom:20px;z-index:100;background:#171a1f;border:1px solid var(--line);padding:13px 16px;border-radius:12px;box-shadow:var(--shadow);max-width:360px}.toast.error{border-color:#7b202a}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;padding:20px;z-index:80}.modal-card{width:min(900px,100%);max-height:92vh;overflow:auto;background:#111317;border:1px solid var(--line);border-radius:22px;padding:22px}
+    .mobile-nav{display:none}.danger-note{padding:12px;border-radius:12px;background:#291115;border:1px solid #64202a;color:#ffb0b7;font-size:13px}
+    .success-note{padding:12px;border-radius:12px;background:#0d2116;border:1px solid #1f5f37;color:#a4f4bc;font-size:13px}
+    .qr-box{display:grid;place-items:center;background:#fff;border-radius:18px;padding:18px;width:max-content;margin:auto}.qr-box canvas{display:block}
+    .checkin-page{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 0,rgba(225,29,46,.18),transparent 45%),#08090b}
+    .checkin-card{width:min(520px,100%);background:#111317;border:1px solid var(--line);border-radius:26px;padding:28px;box-shadow:var(--shadow)}
+    .checkin-status{text-align:center;padding:18px;border-radius:16px;background:#0c0e11;border:1px solid var(--line);margin:16px 0}
+    .big-time{font-size:42px;font-weight:950;letter-spacing:-.04em}.progress{height:8px;background:#242830;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:var(--red);width:0}
+    .mini{font-size:12px;color:var(--muted)}
+    @media(max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.three{grid-template-columns:1fr 1fr}}
+    @media(max-width:800px){.layout{display:block}.sidebar{display:none}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#0b0c0f;border-top:1px solid var(--line);z-index:50;overflow:auto}.mobile-nav button{flex:1;min-width:82px;border:0;background:none;color:#9ca3af;padding:10px 5px;font-size:10px}.mobile-nav button.active{color:#fff}.content{padding:18px 16px 92px}.topbar{padding:0 16px}.stats,.two,.three,.form-grid{grid-template-columns:1fr}.span2{grid-column:auto}.page-head{align-items:flex-start;flex-direction:column}.table-wrap table{min-width:680px}}
+  </style>
 </head>
-
 <body>
-
-
-<!-- =========================================
-     HOMEPAGE
-========================================= -->
-
-<section class="home" id="homeScreen">
-
-    <header class="topbar">
-
-        <img
-            src="beast-mode-logo.png"
-            class="logo"
-            alt="Beast Mode Fitness Studio"
-        >
-
-        <div class="status">
-
-            <span class="status-dot"></span>
-
-            Digital Management System
-
-        </div>
-
-    </header>
-
-
-    <main class="hero">
-
-        <div class="hero-content">
-
-            <div class="eyebrow">
-                Beast Mode Fitness Studio
-            </div>
-
-            <h1>
-                TRAIN<br>
-                <span>HARD.</span><br>
-                LIVE<br>
-                STRONG.
-            </h1>
-
-            <p class="hero-description">
-                The digital management platform for
-                members, trainers and gym operations.
-            </p>
-
-            <button
-                type="button"
-                class="enter-btn"
-                onclick="showLogin()"
-            >
-
-                Enter Management System
-
-                <span>→</span>
-
-            </button>
-
-        </div>
-
-    </main>
-
-
-    <div class="bottom">
-
-        <div>
-
-            <strong>BEAST MODE FITNESS STUDIO</strong>
-
-            &nbsp; · &nbsp;
-
-            MANGALURU
-
-        </div>
-
-        <div>
-
-            GYM MANAGEMENT · V2
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     LOGIN
-========================================= -->
-
-<section id="loginScreen">
-
-    <div class="login-wrap">
-
-
-        <div class="login-brand">
-
-            <img
-                src="beast-mode-logo.png"
-                class="login-logo"
-                alt="Beast Mode"
-            >
-
-            <div class="login-main">
-
-                <div class="eyebrow">
-                    Secure Access
-                </div>
-
-                <h1>
-                    RUN THE<br>
-                    <span>GYM.</span>
-                </h1>
-
-                <p>
-                    Access the Beast Mode digital management
-                    system for members, trainers and gym owners.
-                </p>
-
-            </div>
-
-            <div class="login-footer">
-
-                Beast Mode Fitness Studio · Mangaluru
-
-            </div>
-
-        </div>
-
-
-        <div class="login-panel">
-
-            <h2>
-                Welcome back.
-            </h2>
-
-            <p>
-                Select your account and sign in.
-            </p>
-
-
-            <div class="role-tabs">
-
-                <button
-                    class="role-tab active"
-                    onclick="selectRole('owner',this)"
-                >
-                    OWNER
-                </button>
-
-                <button
-                    class="role-tab"
-                    onclick="selectRole('trainer',this)"
-                >
-                    TRAINER
-                </button>
-
-                <button
-                    class="role-tab"
-                    onclick="selectRole('member',this)"
-                >
-                    MEMBER
-                </button>
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    LOGIN ID
-                </label>
-
-                <input
-                    id="loginId"
-                    type="text"
-                    placeholder="Enter login ID"
-                    autocomplete="username"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    PASSWORD
-                </label>
-
-                <input
-                    id="loginPassword"
-                    type="password"
-                    placeholder="Enter password"
-                    autocomplete="current-password"
-                    onkeydown="if(event.key==='Enter') login()"
-                >
-
-            </div>
-
-
-            <button
-                class="login-btn"
-                onclick="login()"
-            >
-                LOGIN →
-            </button>
-
-
-            <div
-                class="login-error"
-                id="loginError"
-            >
-                Invalid login details.
-            </div>
-
-
-            <div class="demo">
-
-                <strong>
-                    V2 DEMO ACCESS
-                </strong>
-
-                <br>
-
-                Owner:
-                <b>owner</b> /
-                <b>admin123</b>
-
-                <br>
-
-                Trainer:
-                <b>trainer</b> /
-                <b>trainer123</b>
-
-                <br>
-
-                Member:
-                <b>BM1001</b> /
-                <b>18022007</b>
-
-            </div>
-
-
-            <button
-                class="back-btn"
-                onclick="showHome()"
-            >
-                ← Back to homepage
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     DASHBOARD
-========================================= -->
-
-<section id="dashboardScreen">
-
-    <div class="dashboard">
-
-
-        <!-- HEADER -->
-
-        <div class="dashboard-header">
-
-            <div>
-
-                <div
-                    class="role-label"
-                    id="dashboardRole"
-                >
-                    OWNER
-                </div>
-
-                <h1 id="dashboardTitle">
-                    Owner Dashboard
-                </h1>
-
-            </div>
-
-
-            <button
-                class="logout"
-                onclick="logout()"
-            >
-                Logout
-            </button>
-
-        </div>
-
-
-
-        <!-- STATISTICS -->
-
-        <div class="dashboard-card">
-
-            <div class="d-card">
-
-                <small>
-                    Total Members
-                </small>
-
-                <strong id="totalMembers">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="d-card">
-
-                <small>
-                    Today's Attendance
-                </small>
-
-                <strong>
-                    43
-                </strong>
-
-            </div>
-
-
-            <div class="d-card">
-
-                <small>
-                    Fees Due
-                </small>
-
-                <strong>
-                    14
-                </strong>
-
-            </div>
-
-
-            <div class="d-card">
-
-                <small>
-                    Active Trainers
-                </small>
-
-                <strong>
-                    8
-                </strong>
-
-            </div>
-
-
-            <div class="d-card">
-
-                <small>
-                    Monthly Revenue
-                </small>
-
-                <strong>
-                    ₹85,000
-                </strong>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =====================================
-             OWNER MEMBER MANAGEMENT
-        ====================================== -->
-
-        <div
-            class="management"
-            id="ownerManagement"
-        >
-
-            <div class="section-header">
-
-                <h2>
-                    Member Management
-                </h2>
-
-                <button
-                    class="add-btn"
-                    onclick="toggleAddMember()"
-                >
-                    + ADD MEMBER
-                </button>
-
-            </div>
-
-
-            <!-- ADD MEMBER -->
-
-            <div
-                class="add-member-panel"
-                id="addMemberPanel"
-            >
-
-                <h3>
-                    Add New Member
-                </h3>
-
-
-                <div class="member-form">
-
-
-                    <div>
-
-                        <label class="form-label">
-                            Member Name
-                        </label>
-
-                        <input
-                            id="memberName"
-                            type="text"
-                            placeholder="Enter full name"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label class="form-label">
-                            Phone Number
-                        </label>
-
-                        <input
-                            id="memberPhone"
-                            type="tel"
-                            placeholder="Enter phone number"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label class="form-label">
-                            Email
-                        </label>
-
-                        <input
-                            id="memberEmail"
-                            type="email"
-                            placeholder="Enter email"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label class="form-label">
-                            Plan
-                        </label>
-
-                        <select id="memberPlan">
-
-                            <option value="Monthly">
-                                Monthly
-                            </option>
-
-                            <option value="Quarterly">
-                                Quarterly
-                            </option>
-
-                            <option value="Half Yearly">
-                                Half Yearly
-                            </option>
-
-                            <option value="Yearly">
-                                Yearly
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div>
-
-                        <label class="form-label">
-                            Joining Date
-                        </label>
-
-                        <input
-                            id="memberDate"
-                            type="date"
-                        >
-
-                    </div>
-
-
-                    <div>
-
-                        <label class="form-label">
-                            Membership Status
-                        </label>
-
-                        <select id="memberStatus">
-
-                            <option value="Active">
-                                Active
-                            </option>
-
-                            <option value="Inactive">
-                                Inactive
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-actions">
-
-                        <button
-                            class="save-btn"
-                            onclick="addMember()"
-                        >
-                            SAVE MEMBER
-                        </button>
-
-                        <button
-                            class="cancel-btn"
-                            onclick="toggleAddMember(false)"
-                        >
-                            CANCEL
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- SEARCH -->
-
-            <input
-                type="text"
-                class="search-box"
-                id="memberSearch"
-                placeholder="Search members by name, ID, phone or email..."
-                oninput="renderMembers()"
-            >
-
-
-            <!-- TABLE -->
-
-            <div class="table-wrap">
-
-                <table class="member-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                ID
-                            </th>
-
-                            <th>
-                                Name
-                            </th>
-
-                            <th>
-                                Phone
-                            </th>
-
-                            <th>
-                                Plan
-                            </th>
-
-                            <th>
-                                Joining Date
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="memberTableBody">
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =====================================
-             TRAINER PANEL
-        ====================================== -->
-
-        <div
-            class="simple-panel"
-            id="trainerPanel"
-            style="display:none;"
-        >
-
-            <h2>
-                Trainer Workspace
-            </h2>
-
-            <p>
-                Welcome to the Beast Mode trainer dashboard.
-                Member training and attendance features will
-                be connected here in the next development stage.
-            </p>
-
-
-            <div class="profile-grid">
-
-                <div class="profile-item">
-
-                    <small>
-                        Assigned Members
-                    </small>
-
-                    <strong>
-                        24
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Today's Sessions
-                    </small>
-
-                    <strong>
-                        6
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Attendance
-                    </small>
-
-                    <strong>
-                        92%
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =====================================
-             MEMBER PANEL
-        ====================================== -->
-
-        <div
-            class="simple-panel"
-            id="memberPanel"
-            style="display:none;"
-        >
-
-            <h2>
-                Member Profile
-            </h2>
-
-            <p>
-                Welcome to your Beast Mode Fitness Studio
-                member dashboard.
-            </p>
-
-
-            <div class="profile-grid">
-
-                <div class="profile-item">
-
-                    <small>
-                        Member ID
-                    </small>
-
-                    <strong id="memberProfileId">
-                        BM1001
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Membership
-                    </small>
-
-                    <strong>
-                        Active
-                    </strong>
-
-                </div>
-
-
-                <div class="profile-item">
-
-                    <small>
-                        Attendance
-                    </small>
-
-                    <strong>
-                        92%
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
+<div id="app"></div>
+<div id="toast" class="toast hidden"></div>
+<div id="modal" class="modal hidden"></div>
 
 <script>
+(() => {
+  "use strict";
 
-/* =========================================
-   GLOBAL VARIABLES
-========================================= */
+  const STORAGE = "beast_mode_config_v1";
+  const state = {
+    supabase:null, session:null, profile:null, route:location.hash.replace(/^#/,"") || "dashboard",
+    cache:{members:[],trainers:[],plans:[],memberships:[],payments:[],expenses:[],attendance:[],workouts:[],logs:[],settings:null},
+    config: JSON.parse(localStorage.getItem(STORAGE)||"null") || {url:"",key:""},
+    busy:false
+  };
 
-let currentRole = "owner";
+  const app = document.getElementById("app");
+  const toast = document.getElementById("toast");
+  const modal = document.getElementById("modal");
 
+  const esc = s => String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+  const money = n => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:2}).format(Number(n||0));
+  const dateOnly = v => v ? new Date(v).toLocaleDateString("en-IN",{day:"2-digit",month:"2-digit",year:"numeric"}) : "—";
+  const dateTime = v => v ? new Date(v).toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—";
+  const nowISO = () => new Date().toISOString();
+  const todayISO = () => new Date().toISOString().slice(0,10);
+  const id = () => crypto.randomUUID ? crypto.randomUUID() : Date.now()+"-"+Math.random();
+  const initials = n => (String(n||"BM").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("")||"BM").toUpperCase();
 
-/* =========================================
-   DEFAULT MEMBERS
-========================================= */
+  function notify(msg, error=false){
+    toast.textContent=msg; toast.classList.remove("hidden","error"); if(error) toast.classList.add("error");
+    clearTimeout(notify.t); notify.t=setTimeout(()=>toast.classList.add("hidden"),3600);
+  }
 
-const defaultMembers = [
+  function saveConfig(){
+    localStorage.setItem(STORAGE,JSON.stringify(state.config));
+  }
 
-    {
-        id:"BM1001",
-        name:"Aboobakker Fahiz",
-        phone:"9876543210",
-        email:"member@beastmode.com",
-        plan:"Yearly",
-        date:"2026-01-01",
-        status:"Active"
-    },
+  function initSupabase(){
+    if(!state.config.url || !state.config.key || !window.supabase){ state.supabase=null; return; }
+    try { state.supabase=window.supabase.createClient(state.config.url,state.config.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}); }
+    catch(e){ state.supabase=null; notify("Supabase configuration is invalid.",true); }
+  }
 
-    {
-        id:"BM1002",
-        name:"Rahul Kumar",
-        phone:"9876543211",
-        email:"rahul@example.com",
-        plan:"Monthly",
-        date:"2026-02-10",
-        status:"Active"
-    },
+  async function db(table, opts={}){
+    if(!state.supabase) throw new Error("Supabase is not configured. Open Settings → Backend.");
+    let q=state.supabase.from(table);
+    if(opts.select!==false) q=q.select(opts.columns||"*");
+    if(opts.eq) for(const [k,v] of Object.entries(opts.eq)) q=q.eq(k,v);
+    if(opts.order) q=q.order(opts.order.column,{ascending:opts.order.asc!==false});
+    if(opts.limit) q=q.limit(opts.limit);
+    if(opts.single) q=q.single();
+    let r;
+    if(opts.method==="insert") r=await q.insert(opts.data).select(opts.columns||"*");
+    else if(opts.method==="update") r=await q.update(opts.data).select(opts.columns||"*");
+    else if(opts.method==="upsert") r=await q.upsert(opts.data).select(opts.columns||"*");
+    else if(opts.method==="delete") r=await q.delete().select(opts.columns||"*");
+    else r=await q;
+    if(r.error) throw r.error;
+    return r.data;
+  }
 
-    {
-        id:"BM1003",
-        name:"Mohammed Shafi",
-        phone:"9876543212",
-        email:"shafi@example.com",
-        plan:"Quarterly",
-        date:"2026-03-15",
-        status:"Active"
-    },
+  async function logAction(action, description="", target_type=null, target_id=null){
+    try{
+      if(!state.supabase || !state.session) return;
+      await db("activity_logs",{method:"insert",data:{actor_id:state.session.user.id,action,description,target_type,target_id,created_at:nowISO()}});
+    }catch(e){console.warn("activity log",e)}
+  }
 
-    {
-        id:"BM1004",
-        name:"Arjun Shetty",
-        phone:"9876543213",
-        email:"arjun@example.com",
-        plan:"Monthly",
-        date:"2026-04-20",
-        status:"Active"
+  async function loadProfile(){
+    if(!state.supabase || !state.session) return;
+    const p=await db("profiles",{eq:{id:state.session.user.id},single:true});
+    state.profile=p;
+  }
+
+  async function loadCache(){
+    if(!state.supabase || !state.session) return;
+    const role=state.profile?.role;
+    const jobs=[];
+    if(role==="owner" || role==="trainer"){
+      jobs.push(db("members",{order:{column:"created_at",asc:false}}).then(x=>state.cache.members=x||[]));
+      jobs.push(db("trainers",{order:{column:"created_at",asc:false}}).then(x=>state.cache.trainers=x||[]));
+      jobs.push(db("membership_plans",{order:{column:"created_at",asc:false}}).then(x=>state.cache.plans=x||[]));
+      jobs.push(db("memberships",{order:{column:"start_date",asc:false}}).then(x=>state.cache.memberships=x||[]));
+      jobs.push(db("attendance",{order:{column:"check_in_at",asc:false},limit:500}).then(x=>state.cache.attendance=x||[]));
+      jobs.push(db("workout_sessions",{order:{column:"session_date",asc:false},limit:500}).then(x=>state.cache.workouts=x||[]));
     }
-
-];
-
-
-/* =========================================
-   LOAD MEMBERS
-========================================= */
-
-function getMembers(){
-
-    const saved =
-        localStorage.getItem("beastModeMembers");
-
-    if(saved){
-
-        try{
-
-            return JSON.parse(saved);
-
-        }catch(error){
-
-            console.log("Member data error");
-
-        }
-
+    if(role==="owner"){
+      jobs.push(db("payments",{order:{column:"paid_at",asc:false},limit:500}).then(x=>state.cache.payments=x||[]));
+      jobs.push(db("expenses",{order:{column:"expense_date",asc:false},limit:500}).then(x=>state.cache.expenses=x||[]));
+      jobs.push(db("activity_logs",{order:{column:"created_at",asc:false},limit:500}).then(x=>state.cache.logs=x||[]));
+      jobs.push(db("studio_settings",{limit:1}).then(x=>state.cache.settings=x?.[0]||null));
     }
-
-    localStorage.setItem(
-        "beastModeMembers",
-        JSON.stringify(defaultMembers)
-    );
-
-    return defaultMembers;
-
-}
-
-
-/* =========================================
-   SAVE MEMBERS
-========================================= */
-
-function saveMembers(members){
-
-    localStorage.setItem(
-        "beastModeMembers",
-        JSON.stringify(members)
-    );
-
-}
-
-
-/* =========================================
-   SHOW LOGIN
-========================================= */
-
-function showLogin(){
-
-    const home =
-        document.getElementById("homeScreen");
-
-    const login =
-        document.getElementById("loginScreen");
-
-    const dashboard =
-        document.getElementById("dashboardScreen");
-
-
-    if(home){
-
-        home.style.display="none";
-
+    if(role==="member"){
+      // RLS should restrict these to the current member.
+      jobs.push(db("members",{order:{column:"created_at",asc:false}}).then(x=>state.cache.members=x||[]));
+      jobs.push(db("memberships",{order:{column:"start_date",asc:false}}).then(x=>state.cache.memberships=x||[]));
+      jobs.push(db("payments",{order:{column:"paid_at",asc:false},limit:200}).then(x=>state.cache.payments=x||[]));
+      jobs.push(db("attendance",{order:{column:"check_in_at",asc:false},limit:200}).then(x=>state.cache.attendance=x||[]));
+      jobs.push(db("workout_sessions",{order:{column:"session_date",asc:false},limit:200}).then(x=>state.cache.workouts=x||[]));
     }
+    await Promise.allSettled(jobs);
+  }
 
+  function loginView(){
+    return `<div class="auth-wrap">
+      <div class="auth-card">
+        <div class="brand"><div class="brand-mark">BM</div><div><div class="brand-title">BEAST MODE</div><div class="brand-sub">Fitness Studio</div></div></div>
+        <div class="hero"><div class="eyebrow">Operations Desk</div><h1>RUN THE FLOOR.</h1><p class="muted">Members, attendance, memberships, payments, workouts and studio operations in one system.</p></div>
+        ${state.config.url ? "" : `<div class="danger-note" style="margin-bottom:14px">Backend is not configured. This single file is ready for Supabase, but production data cannot work until the project URL and publishable/anon key are configured.</div>`}
+        <form id="loginForm" class="grid">
+          <div class="field"><label>Email</label><input id="email" type="email" required autocomplete="username" placeholder="owner@example.com"></div>
+          <div class="field"><label>Password</label><input id="password" type="password" required autocomplete="current-password" placeholder="••••••••"></div>
+          <button class="btn btn-primary" type="submit">SIGN IN</button>
+        </form>
+        <div class="row space" style="margin-top:16px"><span class="mini">First-time owner setup is handled through Supabase Auth.</span><button class="btn btn-ghost" type="button" onclick="openSetup()">Backend setup</button></div>
+      </div>
+    </div>`;
+  }
 
-    if(dashboard){
+  function setupView(){
+    return `<div class="auth-wrap"><div class="auth-card">
+      <div class="brand"><div class="brand-mark">BM</div><div><div class="brand-title">BACKEND SETUP</div><div class="brand-sub">Supabase connection</div></div></div>
+      <div style="height:18px"></div>
+      <p class="muted">Enter your Supabase project URL and the browser-safe publishable/anon key. Never enter a service-role key here.</p>
+      <div class="grid">
+        <div class="field"><label>Supabase Project URL</label><input id="cfgUrl" value="${esc(state.config.url)}" placeholder="https://xxxx.supabase.co"></div>
+        <div class="field"><label>Publishable / anon key</label><input id="cfgKey" value="${esc(state.config.key)}" placeholder="eyJ..."></div>
+        <div class="row"><button class="btn btn-primary" onclick="saveBackend()">SAVE & CONNECT</button><button class="btn" onclick="location.hash='login';render()">BACK</button></div>
+      </div>
+      <div class="danger-note" style="margin-top:18px">A one-time database migration and secure member-provisioning function are still required on the Supabase project. This HTML must never contain a service-role secret.</div>
+    </div></div>`;
+  }
 
-        dashboard.style.display="none";
+  function shell(){
+    const p=state.profile||{}; const role=p.role||"member";
+    const nav = role==="owner"
+      ? [["dashboard","Dashboard"],["members","Members"],["attendance","Attendance"],["plans","Membership Plans"],["payments","Payments"],["expenses","Expenses"],["trainers","Trainers"],["workouts","Workouts"],["reports","Reports"],["activity","Activity Logs"],["settings","Settings"]]
+      : role==="trainer"
+      ? [["dashboard","Dashboard"],["members","Assigned Members"],["attendance","Attendance"],["workouts","Workouts"],["settings","My Profile"]]
+      : [["dashboard","My Dashboard"],["attendance","My Attendance"],["workouts","My Workouts"],["payments","My Fees"],["settings","My Profile"]];
+    const navHTML=nav.map(([r,l])=>`<button class="${state.route===r?'active':''}" onclick="go('${r}')">${l}</button>`).join("");
+    return `<div class="layout">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">BM</div><div><div class="brand-title">BEAST MODE</div><div class="brand-sub">${esc(role)} portal</div></div></div>
+        <nav class="nav">${navHTML}</nav>
+        <div class="sidebar-bottom"><button class="btn" style="width:100%" onclick="signOut()">SIGN OUT</button></div>
+      </aside>
+      <main class="main">
+        <header class="topbar"><div><b>${esc(state.cache.settings?.studio_name||"BEAST MODE FITNESS STUDIO")}</b><div class="mini">${esc(state.cache.settings?.tagline||"TRAIN HARD. STAY INTENSE.")}</div></div><div class="row"><span class="badge">${esc(role.toUpperCase())}</span><span class="mini">${esc(p.full_name||state.session?.user?.email||"")}</span></div></header>
+        <section class="content" id="view"></section>
+      </main>
+      <nav class="mobile-nav">${navHTML}</nav>
+    </div>`;
+  }
 
+  function dashboardView(){
+    const role=state.profile?.role;
+    if(role==="member") return memberDashboard();
+    const members=state.cache.members, active=members.filter(m=>m.status==="active");
+    const today=state.cache.attendance.filter(a=>String(a.check_in_at||"").slice(0,10)===todayISO());
+    const currently=today.filter(a=>!a.check_out_at);
+    const revenue=state.cache.payments.filter(p=>String(p.paid_at||"").slice(0,10)===todayISO()&&p.status==="paid").reduce((s,p)=>s+Number(p.amount||0),0);
+    const expenses=state.cache.expenses.filter(e=>String(e.expense_date||"").slice(0,10)===todayISO()).reduce((s,e)=>s+Number(e.amount||0),0);
+    return `<div class="page-head"><div><div class="eyebrow">Operations Desk</div><h2>Dashboard</h2><div class="muted">Live values from the connected database.</div></div><button class="btn btn-primary" onclick="go('members')">+ ADD MEMBER</button></div>
+      <div class="grid stats">
+        ${stat("Total Members",members.length,"")} ${stat("Active Members",active.length,"")} ${stat("Today's Check-ins",today.length,"")} ${stat("Currently Inside",currently.length,"accent")} ${stat("Today's Revenue",money(revenue),"accent")}
+      </div>
+      <div class="grid two" style="margin-top:16px">
+        <div class="card"><div class="row space"><h3>Currently checked in</h3><span class="badge green">${currently.length}</span></div>${currently.length?`<div class="table-wrap"><table><thead><tr><th>Member</th><th>Check-in</th><th>Status</th></tr></thead><tbody>${currently.map(a=>rowAttendance(a)).join("")}</tbody></table></div>`:empty("No one is currently checked in.","Live attendance will appear here after a member checks in.")}</div>
+        <div class="card"><div class="row space"><h3>Today</h3><span class="badge">${dateOnly(todayISO())}</span></div><div class="grid two">${metric("Revenue",money(revenue))}${metric("Expenses",money(expenses))}${metric("Net",money(revenue-expenses))}${metric("Attendance",today.length)}</div></div>
+      </div>`;
+  }
+
+  function stat(label,value,cls=""){return `<div class="card stat"><div class="label">${label}</div><div class="value ${cls}">${value}</div></div>`}
+  function metric(label,value){return `<div class="card" style="padding:14px"><div class="mini">${label}</div><b style="font-size:20px">${value}</b></div>`}
+  function empty(title,text){return `<div class="empty"><strong>${title}</strong>${text||""}</div>`}
+
+  function memberDashboard(){
+    const uid=state.session?.user?.id;
+    const m=state.cache.members.find(x=>x.profile_id===uid||x.user_id===uid)||state.cache.members[0];
+    const pays=state.cache.payments, att=state.cache.attendance, workouts=state.cache.workouts;
+    const paid=pays.filter(p=>p.status==="paid").reduce((s,p)=>s+Number(p.amount||0),0);
+    const open=att.find(a=>!a.check_out_at);
+    return `<div class="page-head"><div><div class="eyebrow">Member Portal</div><h2>WELCOME, ${esc(m?.full_name||state.profile?.full_name||"MEMBER").toUpperCase()}</h2><div class="muted">Only your own records are shown by the database access policy.</div></div></div>
+      <div class="grid stats">${stat("Member ID",m?.member_code||"—")}${stat("Attendance",att.length)}${stat("Fees Paid",money(paid))}${stat("Workouts",workouts.length)}${stat("Status",m?.status||"—")}</div>
+      <div class="grid two" style="margin-top:16px">
+        <div class="card">${open?`<div class="eyebrow">Currently inside</div><div class="big-time">${dateTime(open.check_in_at)}</div><p class="muted">You are checked in.</p><button class="btn btn-danger" onclick="memberCheckOut()">CHECK OUT</button>`:`<div class="eyebrow">Gym attendance</div><h3>Ready to train?</h3><p class="muted">Use the gym QR code to open the check-in page, or check in from this member portal.</p><button class="btn btn-primary" onclick="go('attendance')">CHECK IN</button>`}</div>
+        <div class="card"><h3>Membership</h3>${membershipCard(m)}</div>
+      </div>`;
+  }
+
+  function membershipCard(m){
+    const ms=state.cache.memberships.find(x=>x.member_id===m?.id);
+    if(!ms) return empty("No membership yet.","Your membership will appear here after the owner assigns a plan.");
+    const plan=state.cache.plans.find(p=>p.id===ms.plan_id);
+    return `<div class="row space"><span class="badge green">${esc(ms.status||"active")}</span><b>${esc(plan?.name||"Membership")}</b></div><p class="muted">${dateOnly(ms.start_date)} → ${dateOnly(ms.end_date)}</p><h3>${money(ms.agreed_fee)}</h3>`;
+  }
+
+  function membersView(){
+    const list=state.cache.members;
+    return `<div class="page-head"><div><div class="eyebrow">People</div><h2>Members</h2><div class="muted">Real member records from the database.</div></div><button class="btn btn-primary" onclick="memberModal()">+ ADD MEMBER</button></div>
+      <div class="card"><div class="row"><input id="memberSearch" style="flex:1;min-width:220px;background:#0c0e11;border:1px solid #2b3038;color:#fff;border-radius:10px;padding:11px 12px" placeholder="Search name, BM code, phone..." oninput="filterMembers()"></div><div id="memberTable" style="margin-top:14px">${memberTable(list)}</div></div>`;
+  }
+  function memberTable(list){
+    if(!list.length) return empty("No members yet.","Create the first real member from the button above.");
+    return `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Member</th><th>Phone</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(m=>`<tr><td><b>${esc(m.member_code||"—")}</b></td><td><div class="row"><div style="width:34px;height:34px;border-radius:10px;background:#272a31;display:grid;place-items:center;font-weight:900">${initials(m.full_name)}</div><div><b>${esc(m.full_name)}</b><div class="mini">${esc(m.email||"")}</div></div></div></td><td>${esc(m.phone||"—")}</td><td>${dateOnly(m.joining_date)}</td><td><span class="badge ${m.status==="active"?"green":"red"}">${esc(m.status||"—")}</span></td><td><div class="row"><button class="btn" onclick="viewMember('${m.id}')">VIEW</button><button class="btn" onclick="memberModal('${m.id}')">EDIT</button></div></td></tr>`).join("")}</tbody></table></div>`;
+  }
+  function filterMembers(){
+    const q=(document.getElementById("memberSearch")?.value||"").toLowerCase();
+    document.getElementById("memberTable").innerHTML=memberTable(state.cache.members.filter(m=>[m.full_name,m.member_code,m.phone,m.email].join(" ").toLowerCase().includes(q)));
+  }
+
+  function attendanceView(){
+    const role=state.profile?.role;
+    if(role==="member") return memberAttendance();
+    const list=state.cache.attendance;
+    return `<div class="page-head"><div><div class="eyebrow">Attendance</div><h2>${role==="owner"?"Attendance":"Assigned Attendance"}</h2><div class="muted">Check-in and check-out timestamps are generated by the server.</div></div><button class="btn btn-primary" onclick="openCheckin()">OPEN CHECK-IN</button></div>
+      <div class="card"><div class="row"><button class="btn" onclick="attendanceFilter('today')">TODAY</button><button class="btn" onclick="attendanceFilter('all')">ALL</button></div><div id="attendanceTable" style="margin-top:14px">${attendanceTable(list)}</div></div>`;
+  }
+  function memberAttendance(){
+    return `<div class="page-head"><div><div class="eyebrow">My history</div><h2>Attendance</h2></div><button class="btn btn-primary" onclick="openCheckin()">CHECK IN</button></div><div class="card">${attendanceTable(state.cache.attendance)}</div>`;
+  }
+  function attendanceTable(list){
+    if(!list.length)return empty("No attendance records.","Your real check-in/check-out history will appear here.");
+    return `<div class="table-wrap"><table><thead><tr><th>Member</th><th>Date</th><th>Check-in</th><th>Check-out</th><th>Duration</th><th>Status</th></tr></thead><tbody>${list.map(rowAttendance).join("")}</tbody></table></div>`;
+  }
+  function rowAttendance(a){
+    const m=state.cache.members.find(x=>x.id===a.member_id);
+    const dur=a.duration_minutes!=null?`${Math.floor(a.duration_minutes/60)}h ${a.duration_minutes%60}m`:"—";
+    return `<tr><td><b>${esc(m?.member_code||a.member_id||"—")}</b><div class="mini">${esc(m?.full_name||"")}</div></td><td>${dateOnly(a.check_in_at)}</td><td>${dateTime(a.check_in_at)}</td><td>${dateTime(a.check_out_at)}</td><td>${dur}</td><td><span class="badge ${a.check_out_at?"":"green"}">${a.check_out_at?"COMPLETED":"INSIDE"}</span></td></tr>`;
+  }
+
+  function paymentsView(){
+    if(state.profile?.role==="member") return `<div class="page-head"><div><div class="eyebrow">Finance</div><h2>My Fees</h2></div></div><div class="card">${paymentTable(state.cache.payments)}</div>`;
+    return `<div class="page-head"><div><div class="eyebrow">Finance</div><h2>Payments</h2></div><button class="btn btn-primary" onclick="paymentModal()">+ RECORD PAYMENT</button></div><div class="card">${paymentTable(state.cache.payments)}</div>`;
+  }
+  function paymentTable(list){
+    if(!list.length)return empty("No payments recorded.","Payments will appear here after the owner records them.");
+    return `<div class="table-wrap"><table><thead><tr><th>Member</th><th>Amount</th><th>Date</th><th>Method</th><th>Status</th></tr></thead><tbody>${list.map(p=>{const m=state.cache.members.find(x=>x.id===p.member_id);return `<tr><td>${esc(m?.member_code||p.member_id||"—")}<div class="mini">${esc(m?.full_name||"")}</div></td><td><b>${money(p.amount)}</b></td><td>${dateTime(p.paid_at)}</td><td>${esc(p.payment_method||"—")}</td><td><span class="badge ${p.status==="paid"?"green":"amber"}">${esc(p.status||"—")}</span></td></tr>`}).join("")}</tbody></table></div>`;
+  }
+
+  function expensesView(){
+    return `<div class="page-head"><div><div class="eyebrow">Finance</div><h2>Expenses</h2></div><button class="btn btn-primary" onclick="expenseModal()">+ ADD EXPENSE</button></div><div class="card">${state.cache.expenses.length?`<div class="table-wrap"><table><thead><tr><th>Category</th><th>Amount</th><th>Date</th><th>Description</th></tr></thead><tbody>${state.cache.expenses.map(e=>`<tr><td>${esc(e.category)}</td><td>${money(e.amount)}</td><td>${dateOnly(e.expense_date)}</td><td>${esc(e.description||"—")}</td></tr>`).join("")}</tbody></table></div>`:empty("No expenses recorded.","Record real operating expenses here.")}</div>`;
+  }
+
+  function plansView(){
+    return `<div class="page-head"><div><div class="eyebrow">Memberships</div><h2>Membership Plans</h2></div><button class="btn btn-primary" onclick="planModal()">+ ADD PLAN</button></div><div class="grid three">${state.cache.plans.length?state.cache.plans.map(p=>`<div class="card"><div class="row space"><span class="badge ${p.active?"green":"red"}">${p.active?"ACTIVE":"INACTIVE"}</span><button class="btn" onclick="planModal('${p.id}')">EDIT</button></div><h3 style="margin-top:16px">${esc(p.name)}</h3><div class="big-time" style="font-size:30px">${money(p.price)}</div><div class="muted">${p.duration_days||0} days</div><p class="mini">${esc(p.description||"")}</p></div>`).join(""):empty("No plans yet.","The owner can add the gym's final pricing later.")}</div>`;
+  }
+
+  function trainersView(){
+    return `<div class="page-head"><div><div class="eyebrow">Team</div><h2>Trainers</h2></div><button class="btn btn-primary" onclick="trainerModal()">+ ADD TRAINER</button></div><div class="card">${state.cache.trainers.length?`<div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Status</th></tr></thead><tbody>${state.cache.trainers.map(t=>`<tr><td><b>${esc(t.full_name)}</b></td><td>${esc(t.phone||"—")}</td><td>${esc(t.email||"—")}</td><td><span class="badge ${t.active?"green":"red"}">${t.active?"ACTIVE":"INACTIVE"}</span></td></tr>`).join("")}</tbody></table></div>`:empty("No trainers yet.","Add real trainers from the owner portal.")}</div>`;
+  }
+
+  function workoutsView(){
+    const list=state.cache.workouts;
+    return `<div class="page-head"><div><div class="eyebrow">Training</div><h2>Workouts</h2></div><button class="btn btn-primary" onclick="workoutModal()">+ ADD WORKOUT</button></div><div class="card">${list.length?`<div class="table-wrap"><table><thead><tr><th>Date</th><th>Member</th><th>Workout</th><th>Duration</th><th>Notes</th></tr></thead><tbody>${list.map(w=>{const m=state.cache.members.find(x=>x.id===w.member_id);return `<tr><td>${dateOnly(w.session_date)}</td><td>${esc(m?.member_code||w.member_id)}<div class="mini">${esc(m?.full_name||"")}</div></td><td><b>${esc(w.title||w.workout_type||"Workout")}</b></td><td>${w.duration_minutes?esc(w.duration_minutes)+" min":"—"}</td><td>${esc(w.notes||"—")}</td></tr>`}).join("")}</tbody></table></div>`:empty("No workouts yet.","Workout history will appear here after a trainer creates a session.")}</div>`;
+  }
+
+  function reportsView(){
+    const revenue=state.cache.payments.filter(p=>p.status==="paid").reduce((s,p)=>s+Number(p.amount||0),0);
+    const expenses=state.cache.expenses.reduce((s,e)=>s+Number(e.amount||0),0);
+    return `<div class="page-head"><div><div class="eyebrow">Analytics</div><h2>Reports</h2><div class="muted">Current loaded database totals. Add date filters as the dataset grows.</div></div></div>
+      <div class="grid stats">${stat("Members",state.cache.members.length)}${stat("Attendance",state.cache.attendance.length)}${stat("Payments",money(revenue),"accent")}${stat("Expenses",money(expenses))}${stat("Net",money(revenue-expenses),"accent")}</div>
+      <div class="grid two" style="margin-top:16px"><div class="card"><h3>Member Report</h3>${memberTable(state.cache.members)}</div><div class="card"><h3>Attendance Report</h3>${attendanceTable(state.cache.attendance)}</div></div>`;
+  }
+
+  function activityView(){
+    return `<div class="page-head"><div><div class="eyebrow">Audit</div><h2>Activity Logs</h2></div></div><div class="card">${state.cache.logs.length?`<div class="table-wrap"><table><thead><tr><th>Time</th><th>Action</th><th>Description</th></tr></thead><tbody>${state.cache.logs.map(l=>`<tr><td>${dateTime(l.created_at)}</td><td><span class="badge">${esc(l.action)}</span></td><td>${esc(l.description||"")}</td></tr>`).join("")}</tbody></table></div>`:empty("No activity yet.","Administrative activity will appear here.")}</div>`;
+  }
+
+  function settingsView(){
+    const s=state.cache.settings||{};
+    return `<div class="page-head"><div><div class="eyebrow">Configuration</div><h2>Settings</h2></div></div>
+      <div class="grid two">
+        <div class="card"><h3>Studio identity</h3><form id="settingsForm" class="form-grid" style="margin-top:16px">
+          ${field("studio_name","Studio name",s.studio_name||"BEAST MODE FITNESS STUDIO")}${field("tagline","Tagline",s.tagline||"TRAIN HARD. STAY INTENSE.")}${field("phone","Phone",s.phone||"")}${field("email","Email",s.email||"","email")}${field("gst_number","GST number",s.gst_number||"")}${field("address","Address",s.address||"","text","span2")}${field("opening_hours","Opening hours",s.opening_hours||"","text","span2")}
+          <div class="span2"><button class="btn btn-primary" type="submit">SAVE SETTINGS</button></div>
+        </form></div>
+        <div class="card"><h3>Backend</h3><p class="muted">Connected project:</p><div class="mini" style="word-break:break-all">${esc(state.config.url||"Not configured")}</div><div class="row" style="margin-top:16px"><button class="btn" onclick="openSetup()">CHANGE CONNECTION</button><button class="btn" onclick="downloadQR()">DOWNLOAD QR</button></div><div class="qr-box" style="margin-top:20px"><canvas id="qrCanvas"></canvas></div><p class="mini" style="text-align:center;margin-top:10px">Permanent gym QR → <span id="qrText"></span></p></div>
+      </div>`;
+  }
+  function field(name,label,value="",type="text",cls=""){return `<div class="field ${cls}"><label>${label}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}"></div>`}
+
+  function renderView(){
+    const v=document.getElementById("view"); if(!v)return;
+    const map={dashboard:dashboardView,members:membersView,attendance:attendanceView,payments:paymentsView,expenses:expensesView,plans:plansView,trainers:trainersView,workouts:workoutsView,reports:reportsView,activity:activityView,settings:settingsView};
+    v.innerHTML=(map[state.route]||dashboardView)();
+    if(state.route==="settings") drawQR();
+  }
+
+  async function render(){
+    if(location.hash.replace(/^#/,"") && location.hash.replace(/^#/,"")!==state.route) state.route=location.hash.replace(/^#/,"");
+    if(!state.session){
+      app.innerHTML=state.route==="setup"?setupView():loginView();
+      return;
     }
+    app.innerHTML=shell(); renderView();
+  }
 
+  function go(r){state.route=r;location.hash=r;render();}
+  window.go=go;
 
-    if(login){
-
-        login.style.display="flex";
-
-        login.style.visibility="visible";
-
-        login.style.opacity="1";
-
-        login.style.pointerEvents="auto";
-
+  async function boot(){
+    initSupabase();
+    if(state.supabase){
+      const {data}=await state.supabase.auth.getSession(); state.session=data.session;
+      state.supabase.auth.onAuthStateChange(async (_e,s)=>{state.session=s; if(s){try{await loadProfile();await loadCache()}catch(e){console.error(e)}} render()});
+      if(state.session){try{await loadProfile();await loadCache()}catch(e){notify(e.message,true)}}
     }
+    render();
+  }
 
+  window.openSetup=()=>{state.route="setup";location.hash="setup";render()};
+  window.saveBackend=async()=>{
+    state.config.url=document.getElementById("cfgUrl").value.trim().replace(/\/$/,"");
+    state.config.key=document.getElementById("cfgKey").value.trim();
+    saveConfig(); initSupabase();
+    if(!state.supabase){notify("Could not connect. Check URL/key.",true);return}
+    try{const {error}=await state.supabase.auth.getSession();if(error)throw error;notify("Supabase client configured.");location.hash="login";state.route="login";render()}catch(e){notify(e.message,true)}
+  };
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-/* =========================================
-   SHOW HOME
-========================================= */
-
-function showHome(){
-
-    document.getElementById("homeScreen").style.display="flex";
-
-    document.getElementById("loginScreen").style.display="none";
-
-    document.getElementById("dashboardScreen").style.display="none";
-
-    document.getElementById("loginError").style.display="none";
-
-}
-
-
-/* =========================================
-   SELECT ROLE
-========================================= */
-
-function selectRole(role,button){
-
-    currentRole=role;
-
-
-    document
-        .querySelectorAll(".role-tab")
-        .forEach(tab=>{
-
-            tab.classList.remove("active");
-
-        });
-
-
-    button.classList.add("active");
-
-
-    document.getElementById("loginId").value="";
-
-    document.getElementById("loginPassword").value="";
-
-    document.getElementById("loginError").style.display="none";
-
-    document.getElementById("loginId").focus();
-
-}
-
-
-/* =========================================
-   LOGIN
-========================================= */
-
-function login(){
-
-    const id =
-        document
-        .getElementById("loginId")
-        .value
-        .trim();
-
-
-    const password =
-        document
-        .getElementById("loginPassword")
-        .value
-        .trim();
-
-
-    let valid=false;
-
-
-    /* OWNER */
-
-    if(
-        currentRole==="owner" &&
-        id==="owner" &&
-        password==="admin123"
-    ){
-
-        valid=true;
-
+  document.addEventListener("submit",async e=>{
+    if(e.target.id==="loginForm"){
+      e.preventDefault();
+      if(!state.supabase){notify("Configure Supabase first.",true);return}
+      const email=document.getElementById("email").value.trim(), password=document.getElementById("password").value;
+      const {data,error}=await state.supabase.auth.signInWithPassword({email,password});
+      if(error){notify(error.message,true);return}
+      state.session=data.session; await loadProfile(); await loadCache(); state.route="dashboard";location.hash="dashboard";render(); notify("Signed in successfully.");
     }
-
-
-    /* TRAINER */
-
-    if(
-        currentRole==="trainer" &&
-        id==="trainer" &&
-        password==="trainer123"
-    ){
-
-        valid=true;
-
+    if(e.target.id==="settingsForm"){
+      e.preventDefault();
+      try{
+        const payload={studio_name:document.getElementById("studio_name").value.trim(),tagline:document.getElementById("tagline").value.trim(),phone:document.getElementById("phone").value.trim(),email:document.getElementById("email").value.trim(),gst_number:document.getElementById("gst_number").value.trim(),address:document.getElementById("address").value.trim(),opening_hours:document.getElementById("opening_hours").value.trim(),updated_at:nowISO()};
+        if(state.cache.settings?.id) await db("studio_settings",{method:"update",eq:{id:state.cache.settings.id},data:payload});
+        else await db("studio_settings",{method:"insert",data:{...payload,id:id()}});
+        await loadCache();renderView();notify("Studio settings saved.");
+      }catch(e){notify(e.message,true)}
     }
+  });
 
+  window.signOut=async()=>{if(state.supabase)await state.supabase.auth.signOut();state.session=null;state.profile=null;state.cache={members:[],trainers:[],plans:[],memberships:[],payments:[],expenses:[],attendance:[],workouts:[],logs:[],settings:null};state.route="login";location.hash="login";render()};
+  window.openCheckin=()=>{location.hash="checkin";state.route="checkin";renderCheckin()};
+  window.renderCheckin=renderCheckin;
 
-    /* MEMBER */
+  async function renderCheckin(){
+    app.innerHTML=`<div class="checkin-page"><div class="checkin-card">
+      <div class="brand"><div class="brand-mark">BM</div><div><div class="brand-title">BEAST MODE</div><div class="brand-sub">Fitness Studio</div></div></div>
+      <div class="hero"><div class="eyebrow">Gym attendance</div><h1 style="font-size:42px">CHECK IN.</h1><p class="muted">Identify yourself securely. Your check-in time is recorded automatically.</p></div>
+      <form id="checkinForm" class="grid">
+        <div class="field"><label>Member ID</label><input id="ciCode" required placeholder="BM1001" autocapitalize="characters"></div>
+        <div class="field"><label>Date of birth / temporary credential</label><input id="ciSecret" required type="password" placeholder="Your DOB or password"></div>
+        <button class="btn btn-primary" type="submit">VERIFY & CHECK IN</button>
+      </form>
+      <div id="ciResult"></div>
+      <div class="row space" style="margin-top:18px"><button class="btn" onclick="location.hash='login';state.route='login';render()">STAFF / MEMBER LOGIN</button><span class="mini">Scan the permanent gym QR to return here.</span></div>
+    </div></div>`;
+  }
 
-    if(
-        currentRole==="member" &&
-        id==="BM1001" &&
-        password==="18022007"
-    ){
-
-        valid=true;
-
+  document.addEventListener("submit",async e=>{
+    if(e.target.id!=="checkinForm")return;
+    e.preventDefault();
+    const code=document.getElementById("ciCode").value.trim().toUpperCase();
+    const secret=document.getElementById("ciSecret").value;
+    const out=document.getElementById("ciResult");
+    if(!state.supabase){out.innerHTML=`<div class="danger-note">Backend is not configured. The check-in cannot be recorded safely.</div>`;return}
+    try{
+      // This RPC is intentionally required for production. It must verify the member
+      // credential server-side and create/return the attendance record using server time.
+      const {data,error}=await state.supabase.rpc("member_check_in",{p_member_code:code,p_credential:secret});
+      if(error) throw error;
+      out.innerHTML=`<div class="success-note">Checked in successfully. ${esc(data?.message||"Your attendance has been recorded.")}</div>`;
+    }catch(err){
+      out.innerHTML=`<div class="danger-note">${esc(err.message||"Check-in failed.")}</div>`;
     }
-
-
-    if(!valid){
-
-        document.getElementById("loginError").style.display="block";
-
-        return;
-
-    }
-
-
-    document.getElementById("loginError").style.display="none";
-
-
-    showDashboard();
-
-}
-
-
-/* =========================================
-   SHOW DASHBOARD
-========================================= */
-
-function showDashboard(){
-
-    document.getElementById("homeScreen").style.display="none";
-
-    document.getElementById("loginScreen").style.display="none";
-
-    document.getElementById("dashboardScreen").style.display="block";
-
-
-    const title =
-        document.getElementById("dashboardTitle");
-
-    const role =
-        document.getElementById("dashboardRole");
-
-
-    const ownerManagement =
-        document.getElementById("ownerManagement");
-
-    const trainerPanel =
-        document.getElementById("trainerPanel");
-
-    const memberPanel =
-        document.getElementById("memberPanel");
-
-
-    ownerManagement.style.display="none";
-
-    trainerPanel.style.display="none";
-
-    memberPanel.style.display="none";
-
-
-    if(currentRole==="owner"){
-
-        role.textContent="OWNER";
-
-        title.textContent="Owner Dashboard";
-
-        ownerManagement.style.display="block";
-
-        renderMembers();
-
-    }
-
-
-    if(currentRole==="trainer"){
-
-        role.textContent="TRAINER";
-
-        title.textContent="Trainer Dashboard";
-
-        trainerPanel.style.display="block";
-
-    }
-
-
-    if(currentRole==="member"){
-
-        role.textContent="MEMBER";
-
-        title.textContent="Member Dashboard";
-
-        memberPanel.style.display="block";
-
-    }
-
-
-    updateMemberCount();
-
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-/* =========================================
-   UPDATE TOTAL MEMBER COUNT
-========================================= */
-
-function updateMemberCount(){
-
-    const members=getMembers();
-
-    document.getElementById("totalMembers").textContent=
-        members.length;
-
-}
-
-
-/* =========================================
-   TOGGLE ADD MEMBER
-========================================= */
-
-function toggleAddMember(show){
-
-    const panel =
-        document.getElementById("addMemberPanel");
-
-
-    if(show===false){
-
-        panel.style.display="none";
-
-        clearMemberForm();
-
-        return;
-
-    }
-
-
-    if(panel.style.display==="block"){
-
-        panel.style.display="none";
-
-    }else{
-
-        panel.style.display="block";
-
-        document
-            .getElementById("memberName")
-            .focus();
-
-    }
-
-}
-
-
-/* =========================================
-   CLEAR MEMBER FORM
-========================================= */
-
-function clearMemberForm(){
-
-    document.getElementById("memberName").value="";
-
-    document.getElementById("memberPhone").value="";
-
-    document.getElementById("memberEmail").value="";
-
-    document.getElementById("memberPlan").value="Monthly";
-
-    document.getElementById("memberDate").value="";
-
-    document.getElementById("memberStatus").value="Active";
-
-}
-
-
-/* =========================================
-   ADD MEMBER
-========================================= */
-
-function addMember(){
-
-    const name =
-        document
-        .getElementById("memberName")
-        .value
-        .trim();
-
-
-    const phone =
-        document
-        .getElementById("memberPhone")
-        .value
-        .trim();
-
-
-    const email =
-        document
-        .getElementById("memberEmail")
-        .value
-        .trim();
-
-
-    const plan =
-        document
-        .getElementById("memberPlan")
-        .value;
-
-
-    const date =
-        document
-        .getElementById("memberDate")
-        .value;
-
-
-    const status =
-        document
-        .getElementById("memberStatus")
-        .value;
-
-
-    if(!name){
-
-        alert("Please enter member name.");
-
-        return;
-
-    }
-
-
-    if(!phone){
-
-        alert("Please enter phone number.");
-
-        return;
-
-    }
-
-
-    let members=getMembers();
-
-
-    const newNumber =
-        members.length + 1001;
-
-
-    const newId =
-        "BM" + newNumber;
-
-
-    const newMember={
-
-        id:newId,
-
-        name:name,
-
-        phone:phone,
-
-        email:email,
-
-        plan:plan,
-
-        date:date || new Date().toISOString().split("T")[0],
-
-        status:status
-
-    };
-
-
-    members.push(newMember);
-
-
-    saveMembers(members);
-
-
-    clearMemberForm();
-
-    document.getElementById("addMemberPanel").style.display="none";
-
-
-    renderMembers();
-
-    updateMemberCount();
-
-
-    alert(
-        "Member added successfully!\nMember ID: " + newId
-    );
-
-}
-
-
-/* =========================================
-   RENDER MEMBERS
-========================================= */
-
-function renderMembers(){
-
-    const members=getMembers();
-
-
-    const search =
-        document
-        .getElementById("memberSearch")
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    const filtered =
-        members.filter(member=>{
-
-            return (
-
-                member.id.toLowerCase().includes(search) ||
-
-                member.name.toLowerCase().includes(search) ||
-
-                member.phone.toLowerCase().includes(search) ||
-
-                member.email.toLowerCase().includes(search)
-
-            );
-
-        });
-
-
-    const tbody =
-        document.getElementById("memberTableBody");
-
-
-    if(filtered.length===0){
-
-        tbody.innerHTML=`
-
-            <tr>
-
-                <td
-                    colspan="7"
-                    class="empty-state"
-                >
-                    No members found.
-                </td>
-
-            </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    tbody.innerHTML =
-        filtered.map(member=>`
-
-            <tr>
-
-                <td>
-
-                    <span class="member-id">
-                        ${escapeHTML(member.id)}
-                    </span>
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHTML(member.name)}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHTML(member.phone)}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHTML(member.plan)}
-
-                </td>
-
-
-                <td>
-
-                    ${formatDate(member.date)}
-
-                </td>
-
-
-                <td>
-
-                    <span class="status-active">
-
-                        ${escapeHTML(member.status)}
-
-                    </span>
-
-                </td>
-
-
-                <td>
-
-                    <button
-                        class="delete-btn"
-                        onclick="deleteMember('${member.id}')"
-                    >
-                        DELETE
-                    </button>
-
-                </td>
-
-            </tr>
-
-        `).join("");
-
-}
-
-
-/* =========================================
-   DELETE MEMBER
-========================================= */
-
-function deleteMember(id){
-
-    const members=getMembers();
-
-
-    const member =
-        members.find(
-            item=>item.id===id
-        );
-
-
-    if(!member){
-
-        return;
-
-    }
-
-
-    const confirmDelete =
-        confirm(
-            "Delete member " +
-            member.name +
-            " (" +
-            member.id +
-            ")?"
-        );
-
-
-    if(!confirmDelete){
-
-        return;
-
-    }
-
-
-    const updated =
-        members.filter(
-            item=>item.id!==id
-        );
-
-
-    saveMembers(updated);
-
-
-    renderMembers();
-
-    updateMemberCount();
-
-}
-
-
-/* =========================================
-   FORMAT DATE
-========================================= */
-
-function formatDate(date){
-
-    if(!date){
-
-        return "-";
-
-    }
-
-
-    const parts =
-        date.split("-");
-
-
-    if(parts.length!==3){
-
-        return date;
-
-    }
-
-
-    return parts[2] + "/" +
-           parts[1] + "/" +
-           parts[0];
-
-}
-
-
-/* =========================================
-   ESCAPE HTML
-========================================= */
-
-function escapeHTML(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-/* =========================================
-   LOGOUT
-========================================= */
-
-function logout(){
-
-    document.getElementById("dashboardScreen").style.display="none";
-
-    document.getElementById("loginScreen").style.display="flex";
-
-    document.getElementById("loginId").value="";
-
-    document.getElementById("loginPassword").value="";
-
-    document.getElementById("loginError").style.display="none";
-
-    currentRole="owner";
-
-
-    document
-        .querySelectorAll(".role-tab")
-        .forEach(tab=>{
-
-            tab.classList.remove("active");
-
-        });
-
-
-    document
-        .querySelector(".role-tab")
-        .classList.add("active");
-
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-/* =========================================
-   INITIALIZE
-========================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
-
-        updateMemberCount();
-
-    }
-);
-
+  });
+
+  window.memberCheckOut=async()=>{
+    try{
+      const {data,error}=await state.supabase.rpc("member_check_out");
+      if(error)throw error;
+      notify("Checked out successfully."); await loadCache();renderView();
+    }catch(e){notify(e.message,true)}
+  };
+
+  function showModal(title,body){
+    modal.innerHTML=`<div class="modal-card"><div class="row space"><h2>${title}</h2><button class="btn" onclick="closeModal()">CLOSE</button></div><div style="margin-top:20px">${body}</div></div>`;
+    modal.classList.remove("hidden");
+  }
+  window.closeModal=()=>modal.classList.add("hidden");
+
+  function memberModal(memberId=null){
+    const m=state.cache.members.find(x=>x.id===memberId)||{};
+    showModal(memberId?"Edit member":"Add member",`<form id="memberForm" class="form-grid">
+      ${field("m_full_name","Full name",m.full_name||"")}${field("m_phone","Phone",m.phone||"")}${field("m_email","Email",m.email||"","email")}${field("m_dob","Date of birth",m.date_of_birth||"","date")}${field("m_gender","Gender",m.gender||"")} ${field("m_joining","Joining date",m.joining_date||todayISO(),"date")}${field("m_address","Address",m.address||"","text","span2")}${field("m_emergency","Emergency contact",m.emergency_contact||"")}${field("m_emergency_phone","Emergency phone",m.emergency_phone||"")}${field("m_notes","Notes",m.notes||"","text","span2")}
+      <div class="span2 row"><button class="btn btn-primary" type="submit">${memberId?"SAVE CHANGES":"CREATE MEMBER"}</button></div>
+      <input type="hidden" id="m_id" value="${esc(memberId||"")}">
+    </form>`);
+  }
+  window.memberModal=memberModal;
+
+  document.addEventListener("submit",async e=>{
+    if(e.target.id!=="memberForm")return;
+    e.preventDefault();
+    try{
+      const data={full_name:document.getElementById("m_full_name").value.trim(),phone:document.getElementById("m_phone").value.trim(),email:document.getElementById("m_email").value.trim(),date_of_birth:document.getElementById("m_dob").value,gender:document.getElementById("m_gender").value.trim(),joining_date:document.getElementById("m_joining").value,address:document.getElementById("m_address").value.trim(),emergency_contact:document.getElementById("m_emergency").value.trim(),emergency_phone:document.getElementById("m_emergency_phone").value.trim(),notes:document.getElementById("m_notes").value.trim(),status:"active",updated_at:nowISO()};
+      const mid=document.getElementById("m_id").value;
+      if(mid){await db("members",{method:"update",eq:{id:mid},data});await logAction("member_updated","Member updated","member",mid);notify("Member updated.");}
+      else{
+        // member_code generation should be performed by the database trigger/function.
+        await db("members",{method:"insert",data:{...data,id:id(),created_at:nowISO()}});
+        await logAction("member_created","Member created","member",null);notify("Member created.");
+      }
+      closeModal();await loadCache();renderView();
+    }catch(err){notify(err.message,true)}
+  });
+
+  function paymentModal(){
+    const opts=state.cache.members.map(m=>`<option value="${esc(m.id)}">${esc(m.member_code)} — ${esc(m.full_name)}</option>`).join("");
+    showModal("Record payment",`<form id="paymentForm" class="form-grid">${`<div class="field"><label>Member</label><select id="p_member" required>${opts}</select></div>`}${field("p_amount","Amount","","number")}${field("p_method","Payment method","Cash")}${field("p_date","Date",todayISO(),"date")}<div class="field"><label>Status</label><select id="p_status"><option value="paid">Paid</option><option value="partial">Partial</option><option value="pending">Pending</option></select></div>${field("p_note","Notes","","text","span2")}<div class="span2"><button class="btn btn-primary">RECORD PAYMENT</button></div></form>`);
+  }
+  window.paymentModal=paymentModal;
+  document.addEventListener("submit",async e=>{
+    if(e.target.id!=="paymentForm")return;e.preventDefault();
+    try{await db("payments",{method:"insert",data:{id:id(),member_id:document.getElementById("p_member").value,amount:Number(document.getElementById("p_amount").value),payment_method:document.getElementById("p_method").value,paid_at:new Date(document.getElementById("p_date").value).toISOString(),status:document.getElementById("p_status").value,notes:document.getElementById("p_note").value,created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Payment recorded.");}catch(err){notify(err.message,true)}
+  });
+
+  function expenseModal(){showModal("Add expense",`<form id="expenseForm" class="form-grid">${field("e_category","Category","Maintenance")}${field("e_amount","Amount","","number")}${field("e_date","Date",todayISO(),"date")}${field("e_method","Payment method","Cash")}${field("e_desc","Description","","text","span2")}<div class="span2"><button class="btn btn-primary">SAVE EXPENSE</button></div></form>`)}
+  window.expenseModal=expenseModal;
+  document.addEventListener("submit",async e=>{if(e.target.id!=="expenseForm")return;e.preventDefault();try{await db("expenses",{method:"insert",data:{id:id(),category:document.getElementById("e_category").value,amount:Number(document.getElementById("e_amount").value),expense_date:document.getElementById("e_date").value,payment_method:document.getElementById("e_method").value,description:document.getElementById("e_desc").value,created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Expense saved.");}catch(err){notify(err.message,true)}});
+
+  function planModal(planId=null){const p=state.cache.plans.find(x=>x.id===planId)||{};showModal(planId?"Edit membership plan":"Add membership plan",`<form id="planForm" class="form-grid">${field("pl_name","Plan name",p.name||"")}${field("pl_price","Price",p.price||"","number")}${field("pl_days","Duration (days)",p.duration_days||30,"number")}${field("pl_active","Active",p.active===false?"false":"true")} ${field("pl_desc","Description",p.description||"","text","span2")}<input type="hidden" id="pl_id" value="${esc(planId||"")}"><div class="span2"><button class="btn btn-primary">SAVE PLAN</button></div></form>`)}
+  window.planModal=planModal;
+  document.addEventListener("submit",async e=>{if(e.target.id!=="planForm")return;e.preventDefault();try{const pid=document.getElementById("pl_id").value;const data={name:document.getElementById("pl_name").value.trim(),price:Number(document.getElementById("pl_price").value),duration_days:Number(document.getElementById("pl_days").value),active:document.getElementById("pl_active").value!=="false",description:document.getElementById("pl_desc").value.trim(),updated_at:nowISO()};if(pid)await db("membership_plans",{method:"update",eq:{id:pid},data});else await db("membership_plans",{method:"insert",data:{...data,id:id(),created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Membership plan saved.");}catch(err){notify(err.message,true)}});
+
+  function trainerModal(){showModal("Add trainer",`<form id="trainerForm" class="form-grid">${field("t_name","Full name","")}${field("t_phone","Phone","")}${field("t_email","Email","","email")}<div class="span2"><button class="btn btn-primary">CREATE TRAINER</button></div></form>`)}
+  window.trainerModal=trainerModal;
+  document.addEventListener("submit",async e=>{if(e.target.id!=="trainerForm")return;e.preventDefault();try{await db("trainers",{method:"insert",data:{id:id(),full_name:document.getElementById("t_name").value.trim(),phone:document.getElementById("t_phone").value.trim(),email:document.getElementById("t_email").value.trim(),active:true,created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Trainer created.");}catch(err){notify(err.message,true)}});
+
+  function workoutModal(){const opts=state.cache.members.map(m=>`<option value="${esc(m.id)}">${esc(m.member_code)} — ${esc(m.full_name)}</option>`).join("");showModal("Add workout",`<form id="workoutForm" class="form-grid"><div class="field"><label>Member</label><select id="w_member" required>${opts}</select></div>${field("w_date","Date",todayISO(),"date")}${field("w_title","Workout title","")}${field("w_duration","Duration (minutes)","","number")}${field("w_notes","Notes","","text","span2")}<div class="span2"><button class="btn btn-primary">SAVE WORKOUT</button></div></form>`)}
+  window.workoutModal=workoutModal;
+  document.addEventListener("submit",async e=>{if(e.target.id!=="workoutForm")return;e.preventDefault();try{await db("workout_sessions",{method:"insert",data:{id:id(),member_id:document.getElementById("w_member").value,session_date:document.getElementById("w_date").value,title:document.getElementById("w_title").value.trim(),duration_minutes:Number(document.getElementById("w_duration").value||0),notes:document.getElementById("w_notes").value.trim(),created_at:nowISO()}});closeModal();await loadCache();renderView();notify("Workout saved.");}catch(err){notify(err.message,true)}});
+
+  window.viewMember=async memberId=>{
+    const m=state.cache.members.find(x=>x.id===memberId);if(!m)return;
+    const att=state.cache.attendance.filter(a=>a.member_id===memberId), pays=state.cache.payments.filter(p=>p.member_id===memberId), works=state.cache.workouts.filter(w=>w.member_id===memberId);
+    showModal(`${esc(m.full_name)} <span class="mini">${esc(m.member_code||"")}</span>`,`
+      <div class="grid two">
+        <div class="card"><h3>Profile</h3><p><b>Phone:</b> ${esc(m.phone||"—")}</p><p><b>Email:</b> ${esc(m.email||"—")}</p><p><b>DOB:</b> ${dateOnly(m.date_of_birth)}</p><p><b>Gender:</b> ${esc(m.gender||"—")}</p><p><b>Joined:</b> ${dateOnly(m.joining_date)}</p><p><b>Address:</b> ${esc(m.address||"—")}</p><p><b>Emergency:</b> ${esc(m.emergency_contact||"—")} ${esc(m.emergency_phone||"")}</p></div>
+        <div class="card"><h3>Live totals</h3><p>Attendance: <b>${att.length}</b></p><p>Payments: <b>${money(pays.reduce((s,p)=>s+Number(p.amount||0),0))}</b></p><p>Workouts: <b>${works.length}</b></p><p>Status: <span class="badge ${m.status==="active"?"green":"red"}">${esc(m.status||"—")}</span></p></div>
+      </div>
+      <div class="card" style="margin-top:16px"><h3>Attendance</h3>${attendanceTable(att)}</div>
+      <div class="card" style="margin-top:16px"><h3>Payments</h3>${paymentTable(pays)}</div>`);
+  };
+
+  window.attendanceFilter=(kind)=>{const l=kind==="today"?state.cache.attendance.filter(a=>String(a.check_in_at||"").slice(0,10)===todayISO()):state.cache.attendance;const el=document.getElementById("attendanceTable");if(el)el.innerHTML=attendanceTable(l)};
+  window.downloadQR=async()=>{await drawQR(true)};
+  async function drawQR(download=false){
+    const canvas=document.getElementById("qrCanvas");if(!canvas||!window.QRCode)return;
+    const base=location.href.split("#")[0];const target=base+"#checkin";
+    document.getElementById("qrText").textContent=target;
+    await QRCode.toCanvas(canvas,target,{width:220,margin:2,errorCorrectionLevel:"M"});
+    if(download){const a=document.createElement("a");a.download="beast-mode-gym-check-in-qr.png";a.href=canvas.toDataURL("image/png");a.click()}
+  }
+
+  window.addEventListener("hashchange",()=>{state.route=location.hash.replace(/^#/,"")||"dashboard"; if(state.route==="checkin"){renderCheckin()}else render()});
+
+  boot();
+})();
 </script>
-
 </body>
 </html>
